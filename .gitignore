@@ -31,3 +31,7 @@ desktop.ini
 /fuel/app/logs/*/*/*
 /fuel/app/cache/*/*
 /fuel/app/config/crypt.php
+
+npm-debug.log
+node_modules
+app/bower_components

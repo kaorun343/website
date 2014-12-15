@@ -1,0 +1,21 @@
+{
+  "name": "MembersWeb",
+  "version": "1.0.0",
+  "authors": [
+    "PCMasters"
+  ],
+  "description": "MembersWeb",
+  "license": "ISC",
+  "homepage": "hokudai-pc.net",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1"
+  }
+}
