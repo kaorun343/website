@@ -15,7 +15,7 @@ del = require 'del'
 
 gulp.task 'jade', ->
   gulp.src './app/jade/**/*.jade'
-  .pipe filter ['**', '!**/_layouts/**']
+  .pipe filter ['**', '!**/_*/**']
   .pipe plumber {errorHandler: notify.onError('<%= error.message %>')}
   .pipe jade {pretty: true}
   .pipe rename (path) ->
