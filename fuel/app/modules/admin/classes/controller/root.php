@@ -7,7 +7,7 @@ class Controller_Root extends Controller_Base
 
   public function action_index()
   {
-    return "admin/root/index";
+    return \Response::forge(\View::forge('index'));
   }
 
 }

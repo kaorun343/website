@@ -1,0 +1,12 @@
+nav.navbar.navbar-default(role="navigation")
+  .container
+    .navbar-header!= Html::anchor('admin', 'ポータルサイト', ['class' => 'navbar-brand'])
+    ul.nav.navbar-nav
+      li!= Html::anchor('admin/support', 'サポート掲示板')
+      li!= Html::anchor('admin/staff', 'スタッフサイト')
+    ul.nav.navbar-nav.navbar-right
+      li.dropdown
+        a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expand="false") ユーザー名 <span class="caret"></span>
+        ul.dropdown-menu(role="menu")
+          li!= Html::anchor('admin/user', 'ユーザー情報')
+          li!= Html::anchor('admin/user/logout', 'ログアウト')
