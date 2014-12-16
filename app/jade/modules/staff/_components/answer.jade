@@ -1,0 +1,8 @@
+.container
+  .page-header: h1 課題1-1 正しい話し方
+  form(role="form" v-on="submit: save($event)")
+    div(v-component="radio")
+    div(v-component="radio")
+    div(v-component="checkbox")
+    div(v-component="checkbox")
+    button.btn.btn-default(type="submit") Submit

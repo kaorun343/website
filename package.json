@@ -34,8 +34,8 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
+    "bootbox.js": "^4.0.0",
     "vue": "^0.11.4",
-    "vue-route": "^1.4.0",
-    "youtube-iframe-player": "^0.1.0"
+    "vue-route": "^1.4.0"
   }
 }

@@ -1,0 +1,8 @@
+fieldset
+  legend 周囲に明るくにこやかな態度を示すことを、何を振りまくと言う？
+  .radio
+    - foreach(["愛嬌","愛想", "愛情","愛着"] as $answer):
+    label
+      input(type="radio", value!="<?= $answer?>", v-model="picked")
+      - echo $answer
+    - endforeach

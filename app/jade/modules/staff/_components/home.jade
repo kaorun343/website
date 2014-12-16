@@ -11,7 +11,7 @@
         th 資料
     tbody
       tr
-        td: a(style="cursor: pointer", v-on="click: $root.navigate('/lesson/1')") 正しい話し方
+        td: a(style="cursor: pointer", v-on="click: $root.navigate('/lesson/1/video')") 正しい話し方
         td 完了済み
         td!= Html::anchor('api/staff/download/0', 'ダウンロード')
       tr
