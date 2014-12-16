@@ -24,8 +24,8 @@ gulp.task 'jade', ->
   .pipe gulp.dest './fuel/app'
 
 gulp.task 'coffee', ->
-  gulp.src './app/coffee/main/**/*.coffee',
-    base: './app/coffee/main/'
+  gulp.src './app/coffee/**/*.coffee'
+  .pipe filter ['**', '!**/_**']
   .pipe cached 'coffee'
   .pipe plumber {errorHandler: notify.onError('<%= error.message %>')}
   .pipe transform (filename) ->

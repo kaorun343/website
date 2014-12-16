@@ -9,10 +9,10 @@ class Controller_Admin extends Controller_Base
     return \Response::forge(\View::forge('index'));
   }
 
-  public function action_home()
-  {
-    return \Response::forge(\View::forge('home'));
-  }
+  // public function action_home()
+  // {
+  //   return \Response::forge(\View::forge('home'));
+  // }
 
   public function action_download()
   {

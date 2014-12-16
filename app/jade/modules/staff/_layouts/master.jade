@@ -1,9 +1,0 @@
-extends ../../../_layouts/master
-
-block config
-  - $page = "スタッフサイト"
-  
-block menu
-  li!= Html::anchor('admin/staff', 'トップ')
-  li!= Html::anchor('admin/staff/lesson', '課題一覧')
-    

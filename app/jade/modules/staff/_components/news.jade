@@ -1,0 +1,20 @@
+.container
+  .page-header: h1 スタッフサイト
+  .row
+    .col-md-4
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title スケジュール
+        ul.list-group
+          li.list-group-item 1月16日、集まりがあります
+    .col-md-8
+      .panel.panel-default
+        .panel-heading
+          h2.panel-title お知らせ
+        ul.list-group
+          - foreach([1, 2, 3, 4, 5, 6, 7, 8] as $title):
+          li.list-group-item
+            h4.list-group-item-heading!= "タイトル$title"
+            p.list-group-item-text 今日は何曜日でしょうか？<br>月曜日です
+          - endforeach
+                      
