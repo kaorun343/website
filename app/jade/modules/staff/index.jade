@@ -9,6 +9,9 @@ block menu
     
     
 block content
+  
+  button(v-on="click: videoId = '3MteSlpxCpo'") ボタン
+  p {{videoId}}
   div(v-route)
   script#news(type="text/template")
     include _components/news
