@@ -1,8 +1,62 @@
-.container
-  .page-header: h1 課題1-1 正しい話し方
-  form(role="form" v-on="submit: save($event)")
-    div(v-component="radio")
-    div(v-component="radio")
-    div(v-component="checkbox")
-    div(v-component="checkbox")
-    button.btn.btn-default(type="submit") Submit
+.page-header: h1 {{$root.current.lesson.title}}
+
+.progress
+  .progress-bar(
+  role="progressbar",
+  aria-valuenow="{{$root.current.num+1}}",
+  aria-valuemin="0",
+  aria-valuemax="{{$root.question_count}}",
+  style="width: {{($root.current.num+1)/$root.question_count*100}}%"
+  ) 
+    span {{$root.current.num+1}} / {{$root.question_count}} 問
+
+div(v-component="{{$root.current_question.type}}" v-with="$root.current_question")
+
+.row
+  .col-xs-6
+    button.btn.btn-default.pull-left.btn-block(
+    v-attr="disabled: $root.current.num == 0"
+    v-on="click: previousQuestion") 前の問題
+  .col-xs-6
+    button.btn.btn-default.pull-right.btn-block(
+    v-attr="disabled: $root.current.num+1 == $root.question_count"
+    v-on="click: nextQuestion") 次の問題
+hr
+button.btn.btn-success.btn-block(v-on="click: save") 結果を確認
+    
+hr
+h2: a(style="cursor: pointer", 
+v-on="click: $root.navigate('/lesson/'+$root.current.lesson.id+'/video')") 動画を視聴
+
+.modal.fade#myModal(tabindex="-1", role="dialog", 
+aria-labelledby="myModalLabel", aria-hidden="true")
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        h4.modal-title#myModalLabel {{$root.current.lesson.title}}の結果
+      .modal-body
+        .table-responsive
+          table.table.table-striped
+            thead
+              tr
+                th No.
+                th 問題文
+                th あなたの答え
+                th 結果
+            tbody
+              tr(v-repeat="$root.current.questions")
+                td {{$index+1}}
+                td {{sentence}}
+                td {{choices[model]}}
+                td {{model == answer | ja}}
+        .alert.alert-warning(role="alert"
+        v-show="!$root.current.clear") がんばりましょう。
+        .alert.alert-success(role="alert"
+        v-show="$root.current.clear") おめでとうございます！
+      .modal-footer
+        button.btn.btn-default(
+        type="button" data-dismiss="modal"
+        v-show="!$root.current.clear"
+        ) 課題に戻る
+        button.btn.btn-primary(type="button" 
+        v-on="click: $root.navigate('/list')") 別の課題に取り組む

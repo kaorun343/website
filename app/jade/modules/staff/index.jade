@@ -9,10 +9,9 @@ block menu
     
     
 block content
+  .container
+    div(v-route)
   
-  //- button(v-on="click: videoId = '3MteSlpxCpo'") ボタン
-  //- p {{videoId}}
-  div(v-route)
   script#news(type="text/template")
     include _components/news
   script#home(type="text/template")
@@ -26,7 +25,6 @@ block content
     include _components/answer/radio
   script#answerCheckbox(type="text/template")
     include _components/answer/checkbox
-        
     
 block script
   - echo Asset::js('staff/app.js')

@@ -1,26 +1,15 @@
-.container
-  .page-header: h1 課題一覧
+.page-header: h1 課題一覧
 
-  - foreach([1, 2, 3, 4, 5] as $day):
-  .page-header: h3!= $day."日目"
-  table.table.table-striped
-    thead
-      tr
-        th 課題名
-        th 成績
-        th 資料
-    tbody
-      tr
-        td: a(style="cursor: pointer", v-on="click: $root.navigate('/lesson/1/video')") 正しい話し方
-        td 完了済み
-        td!= Html::anchor('api/staff/download/0', 'ダウンロード')
-      tr
-        td: a 正しい食べ方
-        td 80%
-        td 課題を完了してください
-      tr
-        td: a 正しい歩き方
-        td ---
-        td 課題を完了してください
-  - endforeach
+table.table.table-striped
+  thead
+    tr
+      th 課題名
+      th 成績
+      th 資料
+  tbody
+    tr(v-repeat="$root.lessons")
+      td: a(style="cursor: pointer", 
+      v-on="click: $root.navigate('/lesson/'+id+'/video')") {{title}}
+      td 完了済み
+      td!= Html::anchor('api/staff/download/0', 'ダウンロード')
   

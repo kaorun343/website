@@ -1,4 +1,4 @@
-.container
-  .page-header: h1 課題1-1 正しい話し方
-  div(v-youtube="{{$root.videoId}}")
-  h2: a(style="cursor: pointer", v-on="click: $root.navigate('/lesson/1/answer')") 問題へ移動
+.page-header: h1 {{$root.current.lesson.title}}
+div(v-youtube="{{$root.current.lesson.video_id}}")
+h2: a(style="cursor: pointer", 
+v-on="click: $root.navigate('/lesson/'+$root.current.lesson.id+'/answer')") 問題へ移動
