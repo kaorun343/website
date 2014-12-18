@@ -2,7 +2,7 @@
 
 namespace Staff;
 
-class Controller_Base extends \Controller
+class Controller_Base extends \Controller_Rest
 {
 
 }

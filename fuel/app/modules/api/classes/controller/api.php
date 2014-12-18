@@ -2,7 +2,7 @@
 
 namespace Api;
 
-class Controller_Admin extends \Controller_Rest
+class Controller_Api extends \Controller_Rest
 {
   /**
   * /api/module/controller/action/params へのHTTPリクエストを、

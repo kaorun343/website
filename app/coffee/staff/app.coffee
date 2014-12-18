@@ -50,8 +50,11 @@ app = new Vue
         started: false
       return object
 
-  created: ->
-    @lessons = require('./_data/lessons.coffee')
+  ready: ->
+    base_url = $('meta[name="_base"]').attr('content')
+    $.getJSON "#{base_url}api/staff/lessons.json", (json) =>
+      @lessons = json
+      return
     return
 
   components:
@@ -141,43 +144,39 @@ app = new Vue
 
     '/lessons/:id/video':
       componentId: 'video'
-      beforeUpdate: (location, oldLocation, next) ->
-        document.title = "課題#{location.params.id} | スタッフサイト"
-        #データの初期設定
-        if !@current.started
-          @current.lesson = @lessons[location.params.id]
-        next()
-        return
       afterUpdate: (location, oldLocation) ->
+        document.title = "課題#{location.params.id} | スタッフサイト"
         #データの初期設定
         if !@current.started
           #問題をサーバーから取得
           #サーバーからは課題の問題だけを取得する
-          server = (id) ->
-            questions = require('./_data/questions.coffee')
-            questions[location.params.id]
-          @current.questions = server location.params.id
+          base_url = $('meta[name="_base"]').attr('content')
+          id = location.params.id
+          $.getJSON "#{base_url}api/staff/lesson/#{id}.json", (json) =>
+            @current.lesson = json
+          $.getJSON "#{base_url}api/staff/questions/#{id}.json", (json) =>
+            @current.questions = json
 
           @current.started = true
         return
 
     '/lessons/:id/answer':
       componentId: 'answer'
-      beforeUpdate: (location, oldLocation, next) ->
+      afterUpdate: (location, oldLocation) ->
         document.title = "課題#{location.params.id} | スタッフサイト"
         #データの初期設定
         if !@current.started
-          @current.lesson = @lessons[location.params.id]
           #問題をサーバーから取得
           #サーバーからは課題の問題だけを取得する
-          server = (id) ->
-            questions = require('./_data/questions.coffee')
-            questions[location.params.id]
-          @current.questions = server location.params.id
+          base_url = $('meta[name="_base"]').attr('content')
+          id = location.params.id
+          $.getJSON "#{base_url}api/staff/lesson/#{id}.json", (json) =>
+            @current.lesson = json
+          $.getJSON "#{base_url}api/staff/questions/#{id}.json", (json) =>
+            @current.questions = json
+            return
 
           @current.started = true
-
-        next()
         return
 
     options:
