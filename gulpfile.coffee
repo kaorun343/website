@@ -9,6 +9,7 @@ jade = require 'gulp-jade-php'
 filter = require 'gulp-filter'
 plumber = require 'gulp-plumber'
 notify = require 'gulp-notify'
+uglify = require 'gulp-uglify'
 coffee = require 'coffee-script'
 through = require 'through'
 del = require 'del'
@@ -45,6 +46,7 @@ gulp.task 'coffee', ->
 
     .bundle()
   .pipe rename {extname: '.js'}
+  .pipe uglify()
   .pipe gulp.dest './assets/js'
 
 # gulp.task 'js', ->
