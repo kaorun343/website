@@ -1,7 +1,6 @@
-fieldset
-  legend 問{{$root.current.num+1}}. {{sentence}}
-  .radio(v-repeat="choices")
-    label
-      input(type="radio", name="question{{id}}", 
-      value="{{$index}}", v-model="model")
-      | {{$value}}
+h3.page-header 問{{$root.current.num+1}}. {{sentence}}
+.radio(v-repeat="choices")
+  label
+    input(type="radio", name="question{{id}}", 
+    value="{{$index}}", v-model="model")
+    | {{$value}}

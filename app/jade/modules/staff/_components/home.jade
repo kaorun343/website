@@ -9,7 +9,7 @@ table.table.table-striped
   tbody
     tr(v-repeat="$root.lessons")
       td: a(style="cursor: pointer", 
-      v-on="click: $root.navigate('/lesson/'+id+'/video')") {{title}}
+      v-on="click: $root.navigate('/lessons/'+id+'/video')") {{title}}
       td 完了済み
       td!= Html::anchor('api/staff/download/0', 'ダウンロード')
   
