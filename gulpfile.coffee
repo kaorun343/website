@@ -10,6 +10,8 @@ filter = require 'gulp-filter'
 plumber = require 'gulp-plumber'
 notify = require 'gulp-notify'
 uglify = require 'gulp-uglify'
+less = require 'gulp-less'
+minify = require 'gulp-minify-css'
 coffee = require 'coffee-script'
 through = require 'through'
 del = require 'del'
@@ -49,16 +51,16 @@ gulp.task 'coffee', ->
   .pipe uglify()
   .pipe gulp.dest './assets/js'
 
-# gulp.task 'js', ->
-#   gulp.src './app/js/main/**/*.js'
-#   .pipe cached 'js'
-#   .pipe plumber {errorHandler: notify.onError('<%= error.message %>')}
-#   .pipe transform (filename) ->
-#     browserify filename
-#     .bundle()
-#   .pipe gulp.dest './assets/js'
+gulp.task 'less', ->
+  gulp.src './app/less/**/*.less'
+  .pipe cached 'less'
+  .pipe less
+    paths: ['./app/bower_components/']
+  .pipe minify()
+  .pipe gulp.dest './assets/css'
 
-gulp.task 'build', ['jade', 'coffee']
+
+gulp.task 'build', ['jade', 'coffee', 'less']
 gulp.task 'clean', (cb) ->
   del [
     './fuel/app/**/views/*.php'
@@ -71,4 +73,4 @@ gulp.task 'clean', (cb) ->
 gulp.task 'watch', ['build'], ->
   gulp.watch './app/jade/**/*.jade', ['jade']
   gulp.watch './app/coffee/**/*.coffee', ['coffee']
-  # gulp.watch './app/js/**/*.js', ['js']
+  gulp.watch './app/less/**/*.js', ['less']

@@ -3,6 +3,9 @@ extends ../../_layouts/master
 block config
   - $page = "ポータルサイト"
   
+block style
+  - echo Asset::css('admin/style.css')    
+
 block content
   .container
     .page-header
