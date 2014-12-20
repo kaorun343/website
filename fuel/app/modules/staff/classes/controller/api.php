@@ -76,13 +76,6 @@ class Controller_Api extends Controller_Base
     ];
   }
 
-
-  public function get_hello()
-  {
-    $model = Model_Question::forge(['id' => 1]);
-    return $this->response($model);
-  }
-
   public function action_download($id)
   {
     \File::download(DOCROOT.'/docs/favicon.png', 'icon.png');
@@ -103,11 +96,24 @@ class Controller_Api extends Controller_Base
       3 => $model::forge($this->lessons[3]),
       4 => $model::forge($this->lessons[4]),
     ];
+    $lessons[1]->files[] = Model_File::forge(['filename' => 'ファイル1']);
+    $lessons[2]->files[] = Model_File::forge(['filename' => 'ファイル2']);
+    $lessons[3]->files[] = Model_File::forge(['filename' => 'ファイル3']);
+    $lessons[4]->files[] = Model_File::forge(['filename' => 'ファイル4']);
+    $lessons[1]->files[] = Model_File::forge(['filename' => 'ファイル5']);
+    $lessons[2]->files[] = Model_File::forge(['filename' => 'ファイル6']);
+    $lessons[1]->files[] = Model_File::forge(['filename' => 'ファイル7']);
     return $this->response($lessons);
   }
 
   public function get_questions($lesson_id)
   {
     return $this->response($this->questions()[$lesson_id%3+1]);
+  }
+
+  public function get_files()
+  {
+    $files = \File::read_dir(DOCROOT.'files/modules/staff', 1);
+    return $this->response($files);
   }
 }

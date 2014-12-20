@@ -46,6 +46,7 @@ class Model_Lesson extends \Orm\Model
 	protected static $_table_name = 'lessons';
 
 	protected static $_has_many = [
+		'files',
 		'questions',
 	];
 
