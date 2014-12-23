@@ -1,9 +1,7 @@
 gulp = require 'gulp'
 browserify = require 'browserify'
 transform = require 'vinyl-transform'
-source = require 'vinyl-source-stream'
 cached = require 'gulp-cached'
-remember = require 'gulp-remember'
 rename = require 'gulp-rename'
 jade = require 'gulp-jade-php'
 filter = require 'gulp-filter'
@@ -12,8 +10,6 @@ notify = require 'gulp-notify'
 uglify = require 'gulp-uglify'
 less = require 'gulp-less'
 minify = require 'gulp-minify-css'
-coffee = require 'coffee-script'
-through = require 'through'
 del = require 'del'
 
 gulp.task 'jade', ->
@@ -33,19 +29,6 @@ gulp.task 'coffee', ->
   .pipe plumber {errorHandler: notify.onError('<%= error.message %>')}
   .pipe transform (filename) ->
     browserify filename
-    .transform (file) ->
-      data = ''
-
-      write = (buf) ->
-        data += buf
-        return
-      end = ->
-        @queue coffee.compile data
-        @queue null
-        return
-
-      through write, end
-
     .bundle()
   .pipe rename {extname: '.js'}
   .pipe uglify()

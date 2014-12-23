@@ -24,9 +24,6 @@ app = new Vue
     schedules: {}
     lessons: {}
     results: {}
-  filters:
-    'json': (value) ->
-      JSON.stringify value
   computed:
     'current_question': ->
       key = Object.keys(@current.questions)[@current.num]

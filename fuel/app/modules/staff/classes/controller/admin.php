@@ -9,18 +9,8 @@ class Controller_Admin extends Controller_Base
     return \Response::forge(\View::forge('index'));
   }
 
-  // public function action_home()
-  // {
-  //   return \Response::forge(\View::forge('home'));
-  // }
-
   public function action_download()
   {
-    return \Response::forge(\View::forge('download'));
-  }
-
-  public function action_lesson($id)
-  {
-    return \Response::forge(\View::forge('lesson'));
+    return \Response::forge(\Input::get('filename'));
   }
 }

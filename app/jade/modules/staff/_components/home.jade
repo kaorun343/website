@@ -4,12 +4,19 @@ table.table.table-striped
   thead
     tr
       th 課題名
-      th 成績
       th 資料
   tbody
     tr(v-repeat="$root.lessons")
-      td: a(style="cursor: pointer", 
-      v-on="click: $root.navigate('/lessons/'+id+'/video')") {{title}}
-      td 完了済み
-      td!= Html::anchor('api/staff/download/0', 'ダウンロード')
+      td
+        a(style="cursor: pointer", 
+        v-on="click: $root.navigate('/lessons/'+id+'/video')") {{title}}
+        span &nbsp;
+        span.label.label-success 完了
+      td: .dropdown
+        a.dropdown-toggle(
+        type="button", data-toggle="dropdown", aria-expand="false", 
+        style="cursor: pointer") ダウンロード <span class="caret"></span>
+        ul.dropdown-menu(role="menu")
+          li(v-repeat="files"
+          )!= Html::anchor('admin/staff/download/0', '{{filename}}')
   
