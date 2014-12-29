@@ -17,7 +17,7 @@ class Model_File extends \Orm\Model
 			'validation' => ['required'],
 		],
 		'filepath' => [
-			'label' => 'ファイルパス',
+			'label' => 'ファイルの場所',
 			'form' => [
 				'type' => 'text'
 			],

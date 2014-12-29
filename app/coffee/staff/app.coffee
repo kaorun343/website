@@ -83,7 +83,7 @@ app = new Vue
 
           Object.keys(questions).forEach (key) ->
             question = questions[key]
-            result = question.model is question.answer
+            result = "#{question.model}" is "#{question.answer}"
             count += 1 if !result
             return
 
@@ -117,7 +117,7 @@ app = new Vue
       template: '#answerCheckbox'
 
   routes:
-    '/news':
+    '/index':
       componentId: 'news'
       isDefault: true
       beforeUpdate: (location, oldLocation, next) ->
@@ -169,8 +169,10 @@ app = new Vue
           id = location.params.id
           $.getJSON "#{base_url}api/staff/lesson/#{id}.json", (json) =>
             @current.lesson = json
+            return
           $.getJSON "#{base_url}api/staff/questions/#{id}.json", (json) =>
             @current.questions = json
+            @$log 'current.questions'
             return
 
           @current.started = true

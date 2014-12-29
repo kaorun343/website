@@ -18,7 +18,7 @@ class Model_Lesson extends \Orm\Model
 		],
 		'body' => [
 			'data_type' => 'text',
-			'label' => '説明文',
+			'label' => '説明',
 		],
 		'created_at' => [
 			'form' => [
@@ -40,6 +40,9 @@ class Model_Lesson extends \Orm\Model
 		'Orm\Observer_UpdatedAt' => array(
 			'events' => array('before_update'),
 			'mysql_timestamp' => false,
+		),
+		'Orm\Observer_Validation' => array(
+			'events' => array('before_save'),	
 		),
 	);
 

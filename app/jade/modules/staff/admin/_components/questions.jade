@@ -1,0 +1,5 @@
+h3.page-header 設問設定
+div(v-repeat='q: questions')
+  div(v-component="question", v-with="q")
+
+div(v-component="new_question")

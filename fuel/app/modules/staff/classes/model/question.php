@@ -17,6 +17,7 @@ class Model_Question extends \Orm\Model
 				'type' => 'select',
 				'options' => ['radio' => 'radio'],
 			],
+			'default' => "radio",
 			'validation' => ['required'],
 		],
 		'sentence' => [
@@ -27,7 +28,7 @@ class Model_Question extends \Orm\Model
 			'validation' => ['required'],
 		],
 		'choices' => [
-			'data_type' => 'serialize',
+			'data_type' => 'json',
 			'label' => '選択肢',
 			'form' => ['type' => false,],
 			'validation' => ['required'],
@@ -56,10 +57,10 @@ class Model_Question extends \Orm\Model
 			'mysql_timestamp' => false,
 		),
 		'Orm\Observer_Self' => array(
-			'events' => array('after_create'),
+			'events' => array('after_load'),
 		),
 		'Orm\Observer_Typing' => array(
-			'events' => array('after_load'),
+			'events' => array('after_load', 'before_save'),
 		),
 	);
 
@@ -67,7 +68,7 @@ class Model_Question extends \Orm\Model
 
 	protected static $_belongs_to = ['lesson'];
 
-	public function _event_after_create()
+	public function _event_after_load()
 	{
 		// JavaScriptで利用するためにプロパティを追加
 		$this->model="";
