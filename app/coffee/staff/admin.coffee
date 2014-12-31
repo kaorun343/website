@@ -2,6 +2,8 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
+req = require 'superagent'
+
 app = new Vue
   el: 'body'
   data:
@@ -14,13 +16,13 @@ app = new Vue
       $('meta[name="_base"]').attr('content')
   events:
     lesson: (id) ->
-      $.getJSON "#{@base_url()}admin/staff/lesson/#{id}", (json) =>
-        @$data.lesson = json
+      req.get "#{@base_url()}admin/staff/lesson/#{id}.json", (res) =>
+        @$data.lesson = res.body
         return
       return
     questions: (id) ->
-      $.getJSON "#{@base_url()}api/staff/lesson/#{id}/questions", (json)=>
-        @$data.lesson.questions = json
+      req.get "#{@base_url()}api/staff/lesson/#{id}/questions.json", (res)=>
+        @$data.lesson.questions = res.body
         return
       return
 
@@ -31,8 +33,8 @@ app = new Vue
         data =
           lessons: {}
       ready: ->
-        $.getJSON "#{@$root.base_url()}api/staff/lessons", (json)=>
-          @lessons = json
+        req.get "#{@$root.base_url()}api/staff/lessons.json", (res)=>
+          @lessons = res.body
           return
         return
     'new':
@@ -45,19 +47,17 @@ app = new Vue
       methods:
         submit: (e) ->
           e.preventDefault()
-          $.ajax
-            type: "POST"
-            url: "#{@$root.base_url()}admin/staff/lesson"
-            dataType: "json"
-            data: @$data
-          .done (data) =>
-            @$data =
-              title: ""
-              video_id: ""
-              body: ""
-            return
-          .fail (xhr) ->
-            console.log xhr.responseJSON
+          req.post "#{@$root.base_url()}admin/staff/lesson"
+          .type 'json'
+          .send @$data
+          .end (res) =>
+            if res.ok
+              @$data =
+                title: ""
+                video_id: ""
+                body: ""
+            else
+              console.log res.text
             return
           return
     'show':
@@ -75,18 +75,9 @@ app = new Vue
         submit: (e) ->
           e.preventDefault()
           id = @$root.lesson.id
-          console.log @$root.lesson
-          $.ajax
-            type: "PUT"
-            url: "#{@$root.base_url()}admin/staff/lesson/#{id}"
-            data: @$root.lesson
-            dataType: "json"
-          .done (data) ->
-            console.log data
-            return
-          .fail (xhr) ->
-            console.log xhr.responseJSON
-            return
+          req.put "#{@$root.base_url()}admin/staff/lesson/#{id}"
+          .type 'json'
+          .send @$root.lesson
           return
     'question':
       template: '#question'
@@ -105,33 +96,24 @@ app = new Vue
           lesson = @$root.lesson.id
           question = @id
           base = @$root.base_url()
-          console.log JSON.stringify @$data
-          $.ajax
-            type: "PUT"
-            url: "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
-            dataType: "json"
-            data: @$data
-          .done (data) ->
-            @$data = data
-            console.log data
-            return
-          .fail (xhr) ->
-            console.log xhr.responseText
+
+          req.put "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
+          .type 'json'
+          .send @$data
+          .end (res) =>
+            if res.ok
+              @$data = data
             return
           return
         delete: ->
           lesson = @$root.lesson.id
           question = @id
           base = @$root.base_url()
-          $.ajax
-            type: "DELETE"
-            url: "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
-            dataType: "json"
-          .done (data) =>
-            @$dispatch 'questions', lesson
-            return
-          .fail (xhr) ->
-            console.log xhr
+
+          req.del "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
+          .type 'json'
+          .end (res) =>
+            @$dispath 'questions', lesson
             return
           return
     'new_question':
@@ -183,19 +165,16 @@ app = new Vue
         submit: (e) ->
           e.preventDefault()
           id = @$root.lesson.id
-          $.ajax
-            type: "POST"
-            url: "#{@$root.base_url()}admin/staff/lesson/#{id}/file"
-            dataType: "json"
-            data: @$data
-          .done (data) =>
-            @$dispatch 'lesson', id
-            @$data =
-              filename: ""
-              filepath: ""
-            return
-          .fail (xhr) ->
-            console.log xhr
+
+          req.post "#{@$root.base_url()}admin/staff/lesson/#{id}/file"
+          .type 'json'
+          .send @$data
+          .end (res) =>
+            if res.ok
+              @$dispatch 'lesson', id
+              @$data =
+                filename: ""
+                filepath: ""
             return
           return
     'questions':
