@@ -9,6 +9,12 @@ class Controller_Admin extends Controller_Base
         return \Response::forge(\View::forge('admin'));
     }
 
+    public function get_files()
+    {
+        $files = \File::read_dir(DOCROOT.'files/modules/staff', 1);
+        return $this->response($files);
+    }
+
     public function get_lesson($id)
     {
         $data = Model_Lesson::find($id, ['related' => ['questions', 'files']]);
@@ -99,5 +105,25 @@ class Controller_Admin extends Controller_Base
         }
         $question->delete();
         return $this->response(null);
+    }
+
+    public function post_file($lesson_id)
+    {
+        $file = Model_File::forge(\Input::post());
+        $lesson = Model_Lesson::find($lesson_id);
+        if(!$lesson)
+        {
+            throw new \HttpNotFoundException;
+        }
+        try
+        {
+            $file->lesson = $lesson;
+            $file->save();
+            return $this->response($file);
+        }
+        catch (\Orm\ValidationFailed $e)
+        {
+            return $this->response($e->getMessage(), 403);
+        }
     }
 }

@@ -51,7 +51,10 @@ app = new Vue
             dataType: "json"
             data: @$data
           .done (data) =>
-            @$root.lessons[data.id] = data
+            @$data =
+              title: ""
+              video_id: ""
+              body: ""
             return
           .fail (xhr) ->
             console.log xhr.responseJSON
@@ -126,7 +129,6 @@ app = new Vue
             dataType: "json"
           .done (data) =>
             @$dispatch 'questions', lesson
-            # @$dispatch 'lesson', lesson
             return
           .fail (xhr) ->
             console.log xhr
@@ -165,15 +167,47 @@ app = new Vue
             return
           .fail (xhr) ->
             console.log xhr
+            return
           return
         delete: ->
           return
     'file':
       template: '#file'
+    'new_file':
+      template: '#file'
+      data: ->
+        data =
+          filename: ""
+          filepath: ""
+      methods:
+        submit: (e) ->
+          e.preventDefault()
+          id = @$root.lesson.id
+          $.ajax
+            type: "POST"
+            url: "#{@$root.base_url()}admin/staff/lesson/#{id}/file"
+            dataType: "json"
+            data: @$data
+          .done (data) =>
+            @$dispatch 'lesson', id
+            @$data =
+              filename: ""
+              filepath: ""
+            return
+          .fail (xhr) ->
+            console.log xhr
+            return
+          return
     'questions':
       template: '#questions'
+      computed:
+        isArray: ->
+          Array.isArray(@questions)
     'files':
       template: '#files'
+      computed:
+        isArray: ->
+          Array.isArray(@files)
   routes:
     '/index':
       isDefault: true

@@ -29,10 +29,4 @@ class Controller_Api extends Controller_Base
         $questions = Model_Lesson::find($lesson_id)->questions;
         return $this->response($questions);
     }
-
-    public function get_files()
-    {
-        $files = \File::read_dir(DOCROOT.'files/modules/staff', 1);
-        return $this->response($files);
-    }
 }

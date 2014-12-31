@@ -1,3 +1,7 @@
 h3.page-header ファイル設定
-include file
-include file
+div(v-repeat='f: files')
+  div(v-component="file", v-with="f")
+.alert.alert-warning(v-show="isArray", role="alert") ファイルがありません
+h3.page-header 新規ファイル
+div(v-component="new_file")
+      

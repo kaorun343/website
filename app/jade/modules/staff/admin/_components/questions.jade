@@ -1,5 +1,6 @@
 h3.page-header 設問設定
 div(v-repeat='q: questions')
   div(v-component="question", v-with="q")
-
+.alert.alert-warning(v-show="isArray", role="alert") 設問がありません
+h3.page-header 新規設問
 div(v-component="new_question")

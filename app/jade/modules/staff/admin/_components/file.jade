@@ -1,12 +1,15 @@
 .panel.panel-default
   .panel-body
-    form
+    form(v-on="submit: submit($event)")
       .form-group
         label ファイル名
         input.form-control(type="text", required, v-model="filename")
       .form-group
         label ファイルの場所
-        input.form-control(type="text", required, v-model="filepath")
+        select.form-control(v-model="filepath")
+          option(value="") 選択してください
+          - foreach(\File::read_dir(DOCROOT.'files/modules/staff', 1) as $file):
+          option(value!="<?=$file?>")!= $file
+          - endforeach;
       button.btn.btn-primary(type="submit") 保存
       button.btn.btn-danger(type="button") 削除
-          
