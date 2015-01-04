@@ -2,6 +2,22 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
+require 'bootstrap-markdown'
+marked = require 'marked'
+window.marked = marked
+
+do ($ = jQuery) ->
+  $.fn.markdown.messages['ja'] =
+    'Bold': '太字'
+    'Italic': '斜体'
+    'Heading': '見出し'
+    'URL/Link': 'リンク'
+    'Unordered List': 'リスト'
+    'Ordered List': '順序付きリスト'
+    'Preview': 'プレビュー'
+  return
+
+
 app = new Vue
   el: 'body'
   data:
@@ -46,6 +62,14 @@ app = new Vue
       .done done
       return
 
+    markdown: (id) ->
+      $('#mark').markdown
+        language: 'ja'
+        fullscreen:
+          enable: false
+        hiddenButtons: ["Quote", "Image", "Code"]
+      return
+
   components:
     'index':
       template: '#index'
@@ -65,6 +89,9 @@ app = new Vue
           video_id: ""
           body: ""
       template: '#new'
+      ready: ->
+        @$dispatch 'markdown', '#mark'
+        return
       methods:
         submit: (e) ->
           e.preventDefault()
@@ -78,13 +105,16 @@ app = new Vue
       template: '#show'
       data: ->
         data =
-          tab_id: 'questions'
+          tab_id: 'lesson'
       methods:
         tab: (tabname)->
           @tab_id = tabname
           return
     'lesson':
       template: '#lesson'
+      ready: ->
+        @$dispatch 'markdown', '#mark'
+        return
       methods:
         submit: (e) ->
           e.preventDefault()
