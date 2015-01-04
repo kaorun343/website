@@ -40,6 +40,8 @@ app = new Vue
       $.ajax
         type: "POST"
         dataType: "json"
+        headers:
+          'fuel_csrf_token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -49,6 +51,8 @@ app = new Vue
       $.ajax
         type: "PUT"
         dataType: "json"
+        headers:
+          'fuel_csrf_token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -58,12 +62,14 @@ app = new Vue
       $.ajax
         type: "DELETE"
         dataType: "json"
+        headers:
+          'fuel_csrf_token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
       .done done
       return
 
     markdown: (id) ->
-      $('#mark').markdown
+      $(id).markdown
         language: 'ja'
         fullscreen:
           enable: false
