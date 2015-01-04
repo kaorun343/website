@@ -1,10 +1,14 @@
-.page-header: h1 {{$root.current.lesson.title}}
+.page-header: h1 {{$root.lesson.title}}
 
 ul.nav.nav-tabs.nav-justified
-  li.active(role="presentaion"): a(sytle="pointer") 動画
-  li(role="presentation"): a(style="pointer",
-  v-on="click: $root.navigate('/lessons/'+$root.current.lesson.id+'/answer')"
-  ) 設問（全{{$root.question_count}}問）
-hr
+  li(role="presentaion", v-class="active: tab_id==='video'")
+    a(sytle="pointer", v-on="click: tab('video')") 動画
+  li(role="presentation", v-class="active: tab_id==='answer'")
+    a(style="pointer", 
+    v-on="click: tab('answer')") 設問（全{{length}}問）
 
-div(v-youtube="{{$root.current.lesson.video_id}}")
+.tab-content
+  .tab-pane(role="tabpanel", v-class="active: tab_id==='video'")
+    div(v-component="video", v-with="$root.lesson")
+  .tab-pane(role="tabpanel", v-class="active: tab_id==='answer'")
+    div(v-component="answer", v-with="questions: $root.lesson.questions")

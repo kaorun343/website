@@ -22,14 +22,13 @@ block content
     include _components/home
   script#lesson(type="text/template")
     include _components/lesson
+  script#video(type="text/template")
+    include _components/video
   script#answer(type="text/template")
     include _components/answer
   
   script#answerRadio(type="text/template")
     include _components/answer/radio
-  script#answerCheckbox(type="text/template")
-    include _components/answer/checkbox
-  
     
 block script
   - echo Asset::js('staff/app.js')

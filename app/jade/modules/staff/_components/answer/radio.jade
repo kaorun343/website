@@ -1,4 +1,4 @@
-h3.page-header 問{{$root.current.num+1}}. {{sentence}}
+h3.page-header 問{{$parent.index+1}}. {{sentence}}
 .radio(v-repeat="choices")
   label
     input(type="radio", name="question{{id}}", 

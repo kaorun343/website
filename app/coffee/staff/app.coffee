@@ -2,6 +2,8 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
+marked = require 'marked'
+
 setIframe = (videoId) ->
   src = "http://www.youtube.com/embed/#{videoId}?rel=0"
   f1 = "<iframe id='player' src='#{src}' frameborder=0 "
@@ -11,25 +13,10 @@ setIframe = (videoId) ->
 app = new Vue
   el: 'body'
   data:
-    current:
-      lesson: {}
-      questions: {}
-      #現在解いている問題のID
-      num: 0
-      #現在解いている問題を全問正解したかどうか
-      clear: false
-      #問題を解いている状態かどうか
-      started: false
     news: {}
     schedules: {}
     lessons: {}
-    results: {}
-  computed:
-    'current_question': ->
-      key = Object.keys(@current.questions)[@current.num]
-      @current.questions[key]
-    'question_count': ->
-      Object.keys(@current.questions).length
+    lesson: {}
 
   methods:
     navigate: (path) ->
@@ -38,29 +25,46 @@ app = new Vue
     show: (object) ->
       console.log object
       return
-    init: ->
-      object =
-        lesson: {}
-        questions: {}
-        num: 0
-        clear: false
-        started: false
-      return object
+    base_url: -> $('meta[name="_base"]').attr('content')
 
   ready: ->
-    base_url = $('meta[name="_base"]').attr('content')
-    $.getJSON "#{base_url}api/staff/lessons.json", (json) =>
+    $.getJSON "#{@base_url()}api/staff/lessons", (json) =>
       @lessons = json
       return
     return
+
+  events:
+    lesson: (id) ->
+      $.getJSON "#{@base_url()}api/staff/lesson/#{id}", (json) =>
+        @lesson = json
+        @$broadcast 'count', Object.keys(@lesson.questions)
+        return
+      return
 
   components:
     'news':
       template: '#news'
     'home':
       template: '#home'
-    'video':
+    'lesson':
       template: '#lesson'
+      data: ->
+        data =
+          tab_id: "video"
+          length: 0
+      methods:
+        tab: (tabname) ->
+          @tab_id = tabname
+          return
+      events:
+        size: (length) ->
+          @length = length
+          return
+    'video':
+      template: '#video'
+      filters:
+        marked: (value) ->
+          if value then marked value else value
       directives:
         'youtube':
           isLiteral: true
@@ -72,112 +76,79 @@ app = new Vue
             return
     'answer':
       template: '#answer'
+      data: ->
+        data =
+          #現在解いている問題を全問正解したかどうか
+          clear: false
+          index: 0
+          question_count: 0
+          question_keys: {}
+      computed:
+        'question': ->
+          key = @question_keys[@index]
+          @questions[key]
       filters:
         ja: (value) ->
           if value then '正解' else '不正解'
-      methods:
-        save: ->
-          questions = @$root.current.questions
-          # 不正解の設問をカウント
-          count = 0
+      events:
+        count: (keys)->
+          @question_keys = keys
 
-          Object.keys(questions).forEach (key) ->
-            question = questions[key]
+          length = keys.length
+          @question_count = length
+          @$dispatch 'size', length
+          return
+      methods:
+        previousQuestion: ->
+          @index--
+          return
+        nextQuestion: ->
+          @index++
+          return
+        save: ->
+          # 不正解の設問をカウント
+          failed = 0
+
+          Object.keys(@questions).forEach (key) =>
+            question = @questions[key]
             result = "#{question.model}" is "#{question.answer}"
-            count += 1 if !result
+            failed += 1 if !result
             return
 
           # countが0ならクリア
-          if count is 0
-            @$root.current.clear = true
+          if failed is 0
+            @clear = true
             #データをサーバーに送信
 
           $('#myModal').modal
             backdrop: 'static'
             keyboard: false
           return
-
-        previousQuestion: ->
-          @$root.current.num--
-          return
-        nextQuestion: ->
-          @$root.current.num++
-          return
-
-    'radio':
-      template: '#answerRadio'
-      methods:
-        correct: ->
-          @model is @answer
-      created: ->
-        @$on 'test', (name) ->
-          console.log @correct()
-          return
-    'multiple':
-      template: '#answerCheckbox'
+      components:
+        'radio':
+          template: '#answerRadio'
 
   routes:
+    options:
+      hashbang: true
+      click: false
+
     '/index':
       componentId: 'news'
       isDefault: true
-      beforeUpdate: (location, oldLocation, next) ->
-        document.title = "スタッフサイト"
-        next()
-        return
       afterUpdate: (location, oldLocation) ->
-        @current = @init()
+        document.title = "スタッフサイト"
         return
 
     '/list':
       componentId: 'home'
-      orderUpdate: (location, oldLocation, next) ->
+      afterUpdate: (location, oldLocation) ->
         document.title = "課題一覧 | スタッフサイト"
-        next()
-        return
-      afterUpdate: (location, oldLocation) ->
-        @current = null
-        @current = @init()
         return
 
-    '/lessons/:id/video':
-      componentId: 'video'
+    '/lesson/:id':
+      componentId: 'lesson'
       afterUpdate: (location, oldLocation) ->
         document.title = "課題#{location.params.id} | スタッフサイト"
-        #データの初期設定
-        if !@current.started
-          #問題をサーバーから取得
-          #サーバーからは課題の問題だけを取得する
-          base_url = $('meta[name="_base"]').attr('content')
-          id = location.params.id
-          $.getJSON "#{base_url}api/staff/lesson/#{id}.json", (json) =>
-            @current.lesson = json
-          $.getJSON "#{base_url}api/staff/questions/#{id}.json", (json) =>
-            @current.questions = json
-
-          @current.started = true
+        @$emit 'lesson', location.params.id
         return
-
-    '/lessons/:id/answer':
-      componentId: 'answer'
-      afterUpdate: (location, oldLocation) ->
-        document.title = "課題#{location.params.id} | スタッフサイト"
-        #データの初期設定
-        if !@current.started
-          #問題をサーバーから取得
-          #サーバーからは課題の問題だけを取得する
-          base_url = $('meta[name="_base"]').attr('content')
-          id = location.params.id
-          $.getJSON "#{base_url}api/staff/lesson/#{id}.json", (json) =>
-            @current.lesson = json
-            return
-          $.getJSON "#{base_url}api/staff/questions/#{id}.json", (json) =>
-            @current.questions = json
-            @$log 'current.questions'
-            return
-
-          @current.started = true
-        return
-
-    options:
-      hashbang: true
-      click: false

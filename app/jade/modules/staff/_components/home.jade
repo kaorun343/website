@@ -9,7 +9,7 @@ table.table.table-striped
     tr(v-repeat="$root.lessons")
       td
         a(style="cursor: pointer", 
-        v-on="click: $root.navigate('/lessons/'+id+'/video')") {{title}}
+        v-on="click: $root.navigate('/lesson/'+id)") {{title}}
         span &nbsp;
         span.label.label-success 完了
       td: .dropdown
@@ -18,5 +18,5 @@ table.table.table-striped
         style="cursor: pointer") ダウンロード <span class="caret"></span>
         ul.dropdown-menu(role="menu")
           li(v-repeat="files"
-          )!= Html::anchor('admin/staff/download/0', '{{filename}}')
+          )!= Html::anchor('staff/download/{{id}}', '{{filename}}')
   
