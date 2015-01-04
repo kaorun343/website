@@ -9,8 +9,11 @@ class Controller_Staff extends Controller_Base
         return \Response::forge(\View::forge('index'));
     }
 
-    public function action_download()
+    public function action_download($id)
     {
-        return \Response::forge(\Input::get('filename'));
+        $file = Model_File::find($id);
+        $path = $file->filepath;
+        $name = $file->filename;
+        \File::download(DOCROOT.'files/modules/staff/'.$path, $name);
     }
 }

@@ -2,8 +2,6 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
-req = require 'superagent'
-
 app = new Vue
   el: 'body'
   data:
@@ -16,14 +14,36 @@ app = new Vue
       $('meta[name="_base"]').attr('content')
   events:
     lesson: (id) ->
-      req.get "#{@base_url()}admin/staff/lesson/#{id}.json", (res) =>
-        @$data.lesson = res.body
+      i = if id then id else @lesson.id
+      $.getJSON "#{@base_url()}admin/staff/lesson/#{i}.json", (res) =>
+        @lesson = res
         return
       return
-    questions: (id) ->
-      req.get "#{@base_url()}api/staff/lesson/#{id}/questions.json", (res)=>
-        @$data.lesson.questions = res.body
-        return
+
+    post: (url, data, done) ->
+      $.ajax
+        type: "POST"
+        dataType: "json"
+        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
+        data: data
+      .done done
+      return
+
+    put: (url, data, done) ->
+      $.ajax
+        type: "PUT"
+        dataType: "json"
+        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
+        data: data
+      .done done
+      return
+
+    del: (url, done) ->
+      $.ajax
+        type: "DELETE"
+        dataType: "json"
+        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
+      .done done
       return
 
   components:
@@ -33,8 +53,9 @@ app = new Vue
         data =
           lessons: {}
       ready: ->
-        req.get "#{@$root.base_url()}api/staff/lessons.json", (res)=>
-          @lessons = res.body
+        base = $('meta[name="_base"]').attr('content')
+        $.getJSON "#{base}api/staff/lessons.json", (res) =>
+          @lessons = res
           return
         return
     'new':
@@ -47,24 +68,17 @@ app = new Vue
       methods:
         submit: (e) ->
           e.preventDefault()
-          req.post "#{@$root.base_url()}admin/staff/lesson"
-          .type 'json'
-          .send @$data
-          .end (res) =>
-            if res.ok
-              @$data =
-                title: ""
-                video_id: ""
-                body: ""
-            else
-              console.log res.text
+          @$dispatch 'post', "admin/staff/lesson", @$data, (res) =>
+            @title = ""
+            @video_id = ""
+            @body = ""
             return
           return
     'show':
       template: '#show'
       data: ->
         data =
-          tab_id: 'lesson'
+          tab_id: 'questions'
       methods:
         tab: (tabname)->
           @tab_id = tabname
@@ -74,107 +88,11 @@ app = new Vue
       methods:
         submit: (e) ->
           e.preventDefault()
-          id = @$root.lesson.id
-          req.put "#{@$root.base_url()}admin/staff/lesson/#{id}"
-          .type 'json'
-          .send @$root.lesson
-          return
-    'question':
-      template: '#question'
-      methods:
-        edit: (index, value) ->
-          @choices[index] = value
-          return
-        add: ->
-          @choices.push ""
-          return
-        splice: (index) ->
-          @choices.splice index, 1
-          return
-        submit: (e) ->
-          e.preventDefault()
-          lesson = @$root.lesson.id
-          question = @id
-          base = @$root.base_url()
-
-          req.put "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
-          .type 'json'
-          .send @$data
-          .end (res) =>
-            if res.ok
-              @$data = data
-            return
-          return
-        delete: ->
-          lesson = @$root.lesson.id
-          question = @id
-          base = @$root.base_url()
-
-          req.del "#{base}admin/staff/lesson/#{lesson}/question/#{question}"
-          .type 'json'
-          .end (res) =>
-            @$dispath 'questions', lesson
-            return
-          return
-    'new_question':
-      template: '#question'
-      data: ->
-        data =
-          sentence: ""
-          answer: "0"
-          choices: [""]
-      methods:
-        edit: (index, value) ->
-          @choices[index] = value
-          return
-        add: ->
-          @choices.push ""
-          return
-        splice: (index) ->
-          @choices.splice index, 1
-        submit: (e) ->
-          e.preventDefault()
-          id = @$root.lesson.id
-          $.ajax
-            type: "POST"
-            url: "#{@$root.base_url()}admin/staff/lesson/#{id}/question"
-            dataType: "json"
-            data: @$data
-          .done (data) =>
-            @$dispatch 'lesson', data.lesson_id
-            @$data =
-              sentence: ""
-              answer: "0"
-              choices: [""]
-            return
-          .fail (xhr) ->
-            console.log xhr
-            return
-          return
-        delete: ->
-          return
-    'file':
-      template: '#file'
-    'new_file':
-      template: '#file'
-      data: ->
-        data =
-          filename: ""
-          filepath: ""
-      methods:
-        submit: (e) ->
-          e.preventDefault()
-          id = @$root.lesson.id
-
-          req.post "#{@$root.base_url()}admin/staff/lesson/#{id}/file"
-          .type 'json'
-          .send @$data
-          .end (res) =>
-            if res.ok
-              @$dispatch 'lesson', id
-              @$data =
-                filename: ""
-                filepath: ""
+          data =
+            title: @$data.title
+            video_id: @$data.video_id
+            body: @$data.body
+          @$dispatch 'put', "", data, (res)->
             return
           return
     'questions':
@@ -182,11 +100,103 @@ app = new Vue
       computed:
         isArray: ->
           Array.isArray(@questions)
+      components:
+        'question':
+          ready: ->
+            @$set 'deletable', true
+            return
+          template: '#question'
+          methods:
+            # 選択肢の編集に関するメソッド
+            edit: (index, value) ->
+              @choices[index] = value
+              return
+            add: ->
+              @choices.push ""
+              return
+            splice: (index) ->
+              @choices.splice index, 1
+              return
+
+            submit: (e) ->
+              e.preventDefault()
+              @$dispatch 'put', "/question/#{@id}", @$data, (res) ->
+                return
+              return
+            delete: ->
+              @$dispatch 'del', "/question/#{@id}", (res) =>
+                @$dispatch 'lesson'
+                return
+              return
+        'new_question':
+          template: '#question'
+          data: ->
+            data =
+              deletable: false
+              sentence: ""
+              answer: "0"
+              choices: [""]
+          methods:
+            # 選択肢の編集に関するメソッド
+            edit: (index, value) ->
+              @choices[index] = value
+              return
+            add: ->
+              @choices.push ""
+              return
+            splice: (index) ->
+              @choices.splice index, 1
+              return
+
+            submit: (e) ->
+              e.preventDefault()
+              @$dispatch 'post', "/question", @$data, (res) =>
+                @$dispatch 'lesson'
+                @sentence = ""
+                @answer = "0"
+                @choices = [""]
+                return
+              return
+            delete: -> return
     'files':
       template: '#files'
       computed:
         isArray: ->
           Array.isArray(@files)
+      components:
+        'file':
+          template: '#file'
+          ready: ->
+            @$set 'deletable', true
+            return
+          methods:
+            submit: (e) ->
+              e.preventDefault()
+              @$dispatch 'put', "/file/#{@id}", @$data, (res) ->
+                return
+              return
+            delete: ->
+              @$dispatch 'del', "/file/#{@id}", (res) =>
+                @$dispatch 'lesson'
+                return
+              return
+        'new_file':
+          template: '#file'
+          data: ->
+            data =
+              deletable: false
+              filename: ""
+              filepath: ""
+          methods:
+            submit: (e) ->
+              e.preventDefault()
+              @$dispatch 'post', "/file", @$data, (res) =>
+                @$dispatch 'lesson'
+                @filename = ""
+                @filepath = ""
+                return
+              return
+            delete: -> return
   routes:
     '/index':
       isDefault: true

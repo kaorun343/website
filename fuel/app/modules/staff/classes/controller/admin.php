@@ -79,7 +79,7 @@ class Controller_Admin extends Controller_Base
     {
         $question = Model_Question::find($question_id);
         $lesson = $question->lesson;
-        if(!($question && $lesson->id == $lesson_id))
+        if(!($question && ($lesson->id == $lesson_id)))
         {
             throw new \HttpNotFoundException;
         }
@@ -126,4 +126,37 @@ class Controller_Admin extends Controller_Base
             return $this->response($e->getMessage(), 403);
         }
     }
+
+    public function put_file($lesson_id, $file_id)
+    {
+        $file = Model_File::find($file_id);
+        $lesson = $file->lesson;
+        if(!($file && ($lesson->id == $lesson_id)))
+        {
+            throw new \HttpNotFoundException;
+        }
+        try
+        {
+            $file->set(\Input::put());
+            $file->save();
+            return $this->response($file);
+        }
+        catch (\Orm\ValidationFailed $e)
+        {
+            return $this->response($e->getMessage(), 403);
+        }
+    }
+
+    public function delete_file($lesson_id, $file_id)
+    {
+        $file = Model_File::find($file_id);
+        $lesson = $file->lesson;
+        if(!($file && $lesson->id == $lesson_id))
+        {
+            throw new \HttpNotFoundException;
+        }
+        $file->delete();
+        return $this->response(null);
+    }
+
 }

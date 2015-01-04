@@ -28,7 +28,7 @@ class Model_Question extends \Orm\Model
 			'validation' => ['required'],
 		],
 		'choices' => [
-			'data_type' => 'json',
+			'data_type' => 'serialize',
 			'label' => '選択肢',
 			'form' => ['type' => false,],
 			'validation' => ['required'],

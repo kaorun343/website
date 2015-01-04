@@ -21,4 +21,5 @@
               span 削除
         button.btn.btn-default(type="button", v-on="click: add") 追加
       button.btn.btn-primary(type="submit") 保存
-      button.btn.btn-danger(type="button" v-on="click: delete") 削除
+      button.btn.btn-danger(type="button", 
+      v-show="deletable", v-on="click: delete") 削除
