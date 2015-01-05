@@ -1,3 +1,5 @@
 config.php
 migrations.php
 db.php
+auth.php
+simpleauth.php

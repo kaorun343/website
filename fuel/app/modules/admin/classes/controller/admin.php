@@ -2,7 +2,7 @@
 
 namespace Admin;
 
-class Controller_Admin extends \Controller_Rest
+class Controller_Admin extends Controller_Base
 {
   /**
   * /admin/module/controller/action/params へのHTTPリクエストを、

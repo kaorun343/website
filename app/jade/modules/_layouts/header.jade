@@ -1,13 +1,22 @@
+- $auth = Auth::check();
 nav.navbar.navbar-default(role="navigation")
   .container
-    .navbar-header!= Html::anchor('admin', $page, ['class' => 'navbar-brand'])
+    .navbar-header!= Html::anchor('staff', $page, ['class' => 'navbar-brand'])
     ul.nav.navbar-nav
       block menu
-        li!= Html::anchor('admin/support', 'サポート掲示板')
-        li!= Html::anchor('admin/staff', 'スタッフサイト')
+        - if($auth):
+        li!= Html::anchor('staff', 'スタッフサイト')
+        li!= Html::anchor('admin', '管理画面')
+        - endif;
+    - if($auth):
     ul.nav.navbar-nav.navbar-right
       li.dropdown
-        a.dropdown-toggle(href="#" data-toggle="dropdown" role="button" aria-expand="false") ユーザー名 <span class="caret"></span>
+        a.dropdown-toggle(href="#", data-toggle="dropdown", 
+        role="button", aria-expand="false")
+          - $f = Auth::get_profile_fields();
+          - echo $f['firstname']." ".$f['lastname'];
+          span.caret
         ul.dropdown-menu(role="menu")
-          li!= Html::anchor('admin/user', 'ユーザー情報')
-          li!= Html::anchor('admin/user/logout', 'ログアウト')
+          //- li!= Html::anchor('user', 'ユーザー情報')
+          li!= Html::anchor('user/logout', 'ログアウト')
+    - endif;
