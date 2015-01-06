@@ -9,4 +9,11 @@ class Controller_Base extends \Controller_Rest
         parent::before();
         // ログインチェック
     }
+
+    public function check()
+    {
+        return \Auth::check();
+    }
+
+    public $auth = 'check';
 }
