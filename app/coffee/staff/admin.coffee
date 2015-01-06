@@ -5,6 +5,7 @@ Vue.use route
 require 'bootstrap-markdown'
 marked = require 'marked'
 window.marked = marked
+moment = require 'moment'
 
 do ($ = jQuery) ->
   $.fn.markdown.messages['ja'] =
@@ -28,6 +29,10 @@ app = new Vue
       return
     base_url: ->
       $('meta[name="_base"]').attr('content')
+  filters:
+    timestamp: (value) ->
+      if value
+        moment.unix(value).format "MM月DD日 HH時mm分"
   events:
     lesson: (id) ->
       i = if id then id else @lesson.id
@@ -102,9 +107,7 @@ app = new Vue
         submit: (e) ->
           e.preventDefault()
           @$dispatch 'post', "admin/staff/lesson", @$data, (res) =>
-            @title = ""
-            @video_id = ""
-            @body = ""
+            @$root.navigate("/lesson/#{res.id}")
             return
           return
     'show':

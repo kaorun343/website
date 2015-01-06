@@ -10,7 +10,7 @@ h3.page-header 課題設定
         input.form-control(type="text", required, v-model="title")
       .form-group
         label 説明
-        textarea.form-control#mark(rows="4", v-model="body",
+        textarea.form-control#mark(rows="15", v-model="body",
         aria-describedby="helpBlock")
         span.help-block#help-block Markdownで記述できます。
       button.btn.btn-primary(type="submit") 保存
