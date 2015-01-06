@@ -1,4 +1,6 @@
 hr
 div(v-youtube="{{video_id}}")
 .panel.panel-default
+  .panel-heading
+    h2.panel-title 完了日：{{id | timestamp}}
   .panel-body {{{body | marked}}}

@@ -60,7 +60,7 @@ class Model_Question extends \Orm\Model
 			'events' => array('after_load'),
 		),
 		'Orm\Observer_Typing' => array(
-			'events' => array('after_load', 'before_save'),
+			'events' => array('after_load', 'before_save', 'after_save')
 		),
 	);
 

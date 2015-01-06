@@ -28,9 +28,24 @@ class Controller_Api extends Controller_Base
         return $this->response($lessons);
     }
 
-    public function get_questions($lesson_id)
+    public function post_result($lesson_id)
     {
-        $questions = Model_Lesson::find($lesson_id)->questions;
-        return $this->response($questions);
+        $user_id = \Auth::get_user_id()[1];
+        $user = Model_User::find($user_id);
+        if(!$user->result)
+        {
+            $user->result = Model_Result::forge();
+        }
+        $user->result->lessons[$lesson_id] = time();
+        $user->save();
+
+        return $this->response($user->result);
+    }
+
+    public function get_results()
+    {
+        $user_id = \Auth::get_user_id()[1];
+        $result = Model_User::find($user_id)->result;
+        return $this->response($result->lessons);
     }
 }

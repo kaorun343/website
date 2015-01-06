@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "marked": "^0.3.2",
+    "moment": "^2.8.4",
     "vue": "^0.11.4",
     "vue-route": "^1.4.0"
   }

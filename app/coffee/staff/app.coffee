@@ -2,6 +2,7 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
+moment = require 'moment'
 marked = require 'marked'
 
 setIframe = (videoId) ->
@@ -17,19 +18,23 @@ app = new Vue
     schedules: {}
     lessons: {}
     lesson: {}
+    results: {}
 
   methods:
     navigate: (path) ->
       Vue.navigate("#{path}")
       return
-    show: (object) ->
-      console.log object
-      return
     base_url: -> $('meta[name="_base"]').attr('content')
+    get_lessons: ->
+      $.getJSON "#{@base_url()}api/staff/lessons", (json) =>
+        @lessons = json
+        return
+
 
   ready: ->
-    $.getJSON "#{@base_url()}api/staff/lessons", (json) =>
-      @lessons = json
+    @get_lessons()
+    $.getJSON "#{@base_url()}api/staff/results", (json) =>
+      @results = json
       return
     return
 
@@ -41,11 +46,30 @@ app = new Vue
         return
       return
 
+    result: ->
+      if @results[@lesson.id]
+        return
+      else
+        $.ajax
+          type: "POST"
+          dataType: "json"
+          url: "#{@base_url()}api/staff/lesson/#{@lesson.id}/result"
+          headers:
+            'fuel_csrf_token': fuel_csrf_token()
+        .done (res) =>
+          @get_lessons()
+        return
+
   components:
     'news':
       template: '#news'
     'home':
       template: '#home'
+      filters:
+        hasCleared: (id) ->
+          @$root.results[id]
+        hasNotCleared: (id) ->
+          if @$root.results[id] then false else true
     'lesson':
       template: '#lesson'
       data: ->
@@ -63,8 +87,13 @@ app = new Vue
     'video':
       template: '#video'
       filters:
+        timestamp: (id) ->
+          if timestamp = @$root.results[id]
+            moment.unix(timestamp).format "MM月DD日 HH時mm分"
+          else
+            ""
         marked: (value) ->
-          if value then marked value else value
+          if value then marked value else "（説明なし）"
       directives:
         'youtube':
           isLiteral: true
@@ -119,6 +148,7 @@ app = new Vue
           if failed is 0
             @clear = true
             #データをサーバーに送信
+            @$dispatch 'result'
 
           $('#myModal').modal
             backdrop: 'static'
