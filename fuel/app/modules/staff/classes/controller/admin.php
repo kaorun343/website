@@ -6,7 +6,7 @@ class Controller_Admin extends Controller_Base
 {
     public $auth = 'check';
 
-    protected function check()
+    public function check()
     {
         if(\Input::method() != "GET")
         {
