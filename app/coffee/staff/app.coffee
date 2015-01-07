@@ -55,7 +55,7 @@ app = new Vue
           dataType: "json"
           url: "#{@base_url()}api/staff/lesson/#{@lesson.id}/result"
           headers:
-            'fuel_csrf_token': fuel_csrf_token()
+            'X-CSRF-Token': fuel_csrf_token()
         .done (res) =>
           @get_lessons()
         return

@@ -4,17 +4,6 @@ namespace Staff;
 
 class Controller_Api extends Controller_Base
 {
-    public $auth = 'check';
-
-    public function check()
-    {
-        if(\Input::method() != "GET")
-        {
-            $token = \Input::headers('fuel_csrf_token');
-            return \Security::check_token($token);
-        }
-        return true;
-    }
 
     public function get_lesson($id)
     {

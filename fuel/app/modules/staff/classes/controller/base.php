@@ -4,15 +4,19 @@ namespace Staff;
 
 class Controller_Base extends \Controller_Rest
 {
-    public function before()
-    {
-        parent::before();
-        // ログインチェック
-    }
 
     public function check()
     {
-        return \Auth::check();
+        if(!\Auth::check())
+        {
+            return false;
+        }
+        if(\Input::method() != "GET")
+        {
+            $token = \Input::headers('X-CSRF-Token');
+            return \Security::check_token($token);
+        }
+        return true;
     }
 
     public $auth = 'check';

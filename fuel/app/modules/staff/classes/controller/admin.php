@@ -4,16 +4,14 @@ namespace Staff;
 
 class Controller_Admin extends Controller_Base
 {
-    public $auth = 'check';
 
     public function check()
     {
-        if(\Input::method() != "GET")
+        if(parent::check())
         {
-            $token = \Input::headers('fuel_csrf_token');
-            return \Security::check_token($token);
+            return true;
         }
-        return true;
+        return false;
     }
 
     public function action_index()

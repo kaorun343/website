@@ -46,7 +46,7 @@ app = new Vue
         type: "POST"
         dataType: "json"
         headers:
-          'fuel_csrf_token': fuel_csrf_token()
+          'X-CSRF-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -57,7 +57,7 @@ app = new Vue
         type: "PUT"
         dataType: "json"
         headers:
-          'fuel_csrf_token': fuel_csrf_token()
+          'X-CSRF-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -68,7 +68,7 @@ app = new Vue
         type: "DELETE"
         dataType: "json"
         headers:
-          'fuel_csrf_token': fuel_csrf_token()
+          'X-CSRF-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
       .done done
       return
@@ -106,8 +106,17 @@ app = new Vue
       methods:
         submit: (e) ->
           e.preventDefault()
-          @$dispatch 'post', "admin/staff/lesson", @$data, (res) =>
-            @$root.navigate("/lesson/#{res.id}")
+          base = $('meta[name="_base"]').attr('content')
+          $.ajax
+            type: "POST"
+            dataType: "json"
+            headers:
+              'X-CSRF-Token': fuel_csrf_token()
+            url: "#{base}admin/staff/lesson"
+            data: @$data
+          .done (json) =>
+            console.log json
+            @$root.navigate("/lesson/#{json.id}")
             return
           return
     'show':
