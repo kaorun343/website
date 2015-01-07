@@ -13,7 +13,7 @@ class Controller_Base extends \Controller_Rest
         }
         if(\Input::method() != "GET")
         {
-            $token = \Input::headers('X-CSRF-Token');
+            $token = \Input::headers('X-Csrf-Token');
             return \Security::check_token($token);
         }
         return true;

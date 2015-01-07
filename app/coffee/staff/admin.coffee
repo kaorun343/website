@@ -46,7 +46,7 @@ app = new Vue
         type: "POST"
         dataType: "json"
         headers:
-          'X-CSRF-Token': fuel_csrf_token()
+          'X-Csrf-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -57,7 +57,7 @@ app = new Vue
         type: "PUT"
         dataType: "json"
         headers:
-          'X-CSRF-Token': fuel_csrf_token()
+          'X-Csrf-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
         data: data
       .done done
@@ -68,7 +68,7 @@ app = new Vue
         type: "DELETE"
         dataType: "json"
         headers:
-          'X-CSRF-Token': fuel_csrf_token()
+          'X-Csrf-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
       .done done
       return
@@ -111,7 +111,7 @@ app = new Vue
             type: "POST"
             dataType: "json"
             headers:
-              'X-CSRF-Token': fuel_csrf_token()
+              'X-Csrf-Token': fuel_csrf_token()
             url: "#{base}admin/staff/lesson"
             data: @$data
           .done (json) =>
