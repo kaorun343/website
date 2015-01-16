@@ -28,7 +28,7 @@ class Controller_Api extends Controller_Base
         $user->result->lessons[$lesson_id] = time();
         $user->save();
 
-        return $this->response($user->result);
+        return $this->response($user->result->lessons);
     }
 
     public function get_results()

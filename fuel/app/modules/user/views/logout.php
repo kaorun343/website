@@ -15,7 +15,7 @@
           <li><?php echo Html::anchor('admin', '管理画面'); ?></li><?php endif; ?>
         </ul><?php if($auth): ?>
         <ul class="nav navbar-nav navbar-right">
-          <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expand="false" class="dropdown-toggle"><?php $f = Auth::get_profile_fields(); ?><?php echo $f['firstname']." ".$f['lastname']; ?><span class="caret"></span></a>
+          <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expand="false" class="dropdown-toggle"><?php echo Auth::get_screen_name(); ?><span class="caret"></span></a>
             <ul role="menu" class="dropdown-menu">
               <li><?php echo Html::anchor('user/logout', 'ログアウト'); ?></li>
             </ul>

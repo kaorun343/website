@@ -29,13 +29,16 @@ app = new Vue
       $.getJSON "#{@base_url()}api/staff/lessons", (json) =>
         @lessons = json
         return
+    get_results: ->
+      $.getJSON "#{@base_url()}api/staff/results", (json) =>
+        @results = json
+        return
+
 
 
   ready: ->
     @get_lessons()
-    $.getJSON "#{@base_url()}api/staff/results", (json) =>
-      @results = json
-      return
+    @get_results()
     return
 
   events:
@@ -56,8 +59,8 @@ app = new Vue
           url: "#{@base_url()}api/staff/lesson/#{@lesson.id}/result"
           headers:
             'X-Csrf-Token': fuel_csrf_token()
-        .done (res) =>
-          @get_lessons()
+        .done (json) =>
+          @results = json
         return
 
   components:
@@ -165,13 +168,13 @@ app = new Vue
 
     '/index':
       componentId: 'news'
-      isDefault: true
       afterUpdate: (location, oldLocation) ->
         document.title = "スタッフサイト"
         return
 
     '/list':
       componentId: 'home'
+      isDefault: true
       afterUpdate: (location, oldLocation) ->
         document.title = "課題一覧 | スタッフサイト"
         return

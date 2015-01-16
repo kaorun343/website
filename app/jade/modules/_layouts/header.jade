@@ -13,8 +13,7 @@ nav.navbar.navbar-default(role="navigation")
       li.dropdown
         a.dropdown-toggle(href="#", data-toggle="dropdown", 
         role="button", aria-expand="false")
-          - $f = Auth::get_profile_fields();
-          - echo $f['firstname']." ".$f['lastname'];
+          - echo Auth::get_screen_name();
           span.caret
         ul.dropdown-menu(role="menu")
           //- li!= Html::anchor('user', 'ユーザー情報')
