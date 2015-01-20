@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{result.user.username}}</h3>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>完了日</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-repeat="result.lessons">
+        <td>{{$key}}</td>
+        <td>{{$value | timestamp}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

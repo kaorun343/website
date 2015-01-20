@@ -25,6 +25,12 @@ class Controller_Admin extends Controller_Base
         return $this->response($files);
     }
 
+    public function get_results()
+    {
+        $results = Model_Result::find('all', ['related' => ['user']]);
+        return $this->response($results);
+    }
+
     public function get_lesson($id)
     {
         $data = Model_Lesson::find($id, ['related' => ['questions', 'files']]);

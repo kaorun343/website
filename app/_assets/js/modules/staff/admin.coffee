@@ -89,6 +89,7 @@ app = new Vue
     create: require './admin/create'
     show: require './admin/show'
     downloads: require './admin/downloads'
+    results: require './admin/results'
   routes:
     '/index':
       isDefault: true
@@ -102,6 +103,8 @@ app = new Vue
         return
     '/downloads':
       componentId: 'downloads'
+    '/results':
+      componentId: 'results'
     options:
       hashbang: true
       click: false
