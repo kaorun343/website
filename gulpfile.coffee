@@ -1,7 +1,4 @@
 gulp = require 'gulp'
-browserify = require 'browserify'
-transform = require 'vinyl-transform'
-cached = require 'gulp-cached'
 rename = require 'gulp-rename'
 jade = require 'gulp-jade-php'
 filter = require 'gulp-filter'
@@ -30,18 +27,6 @@ gulp.task 'jade', ->
     return
   .pipe gulp.dest './fuel/app'
 
-gulp.task 'coffee', ->
-  gulp.src './app/coffee/**/*.coffee'
-  .pipe filter ['**', '!**/_*/**']
-  .pipe cached 'coffee'
-  .pipe plumber {errorHandler: notify.onError('<%= error.message %>')}
-  .pipe transform (filename) ->
-    browserify filename
-    .bundle()
-  .pipe rename {extname: '.js'}
-  .pipe uglify()
-  .pipe gulp.dest './assets/js'
-
 gulp.task 'less', ->
   gulp.src './app/less/**/*.less'
   .pipe less
@@ -50,7 +35,12 @@ gulp.task 'less', ->
   .pipe gulp.dest './assets/css'
 
 
-gulp.task 'build', ['jade', 'coffee', 'less']
+gulp.task 'build', ['jade'], ->
+  gulp.src './app/_assets/js/**/*.coffee'
+  .pipe webpack config {watch: false}
+  .pipe uglify()
+  .pipe gulp.dest '.'
+
 gulp.task 'clean', (cb) ->
   del [
     './fuel/app/**/views/*.php'
@@ -62,5 +52,4 @@ gulp.task 'clean', (cb) ->
 
 gulp.task 'watch', ['build'], ->
   gulp.watch './app/jade/**/*.jade', ['jade']
-  gulp.watch './app/coffee/**/*.coffee', ['coffee']
   gulp.watch './app/less/**/*.less', ['less']
