@@ -2,7 +2,6 @@ Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
-require 'bootstrap-markdown'
 marked = require 'marked'
 window.marked = marked
 moment = require 'moment'
@@ -33,6 +32,7 @@ app = new Vue
     timestamp: (value) ->
       if value
         moment.unix(value).format "MM月DD日 HH時mm分"
+  ready: ->
   events:
     lesson: (id) ->
       i = if id then id else @lesson.id

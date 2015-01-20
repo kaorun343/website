@@ -12,6 +12,14 @@ less = require 'gulp-less'
 minify = require 'gulp-minify-css'
 del = require 'del'
 
+webpack = require 'gulp-webpack'
+config = require './webpack.config'
+
+gulp.task 'webpack', ->
+  gulp.src './app/_assets/js/**/*.coffee'
+  .pipe webpack config {watch: true}
+  .pipe gulp.dest '.'
+
 gulp.task 'jade', ->
   gulp.src './app/jade/**/*.jade'
   .pipe filter ['**', '!**/_*/**']
@@ -36,9 +44,8 @@ gulp.task 'coffee', ->
 
 gulp.task 'less', ->
   gulp.src './app/less/**/*.less'
-  .pipe cached 'less'
   .pipe less
-    paths: ['./app/bower_components/']
+    paths: ['./assets/bower_components/']
   .pipe minify()
   .pipe gulp.dest './assets/css'
 

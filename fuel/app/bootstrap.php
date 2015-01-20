@@ -26,3 +26,6 @@ ini_set('default_charset', 'UTF-8');
 
 // Initialize the framework with the config file.
 \Fuel::init('config.php');
+
+Asset::add_path('assets/bower_components/','js');
+Asset::add_path('assets/bower_components/','css');
