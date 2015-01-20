@@ -1,5 +1,5 @@
 module.exports =
-  template: '#questions'
+  template: require './questions.html'
   computed:
     isArray: -> Array.isArray(@questions)
   components:

@@ -1,5 +1,5 @@
 module.exports =
-  template: '#question'
+  template: require './question.html'
   mixins: [require './_mixin']
   data: ->
     deletable: false

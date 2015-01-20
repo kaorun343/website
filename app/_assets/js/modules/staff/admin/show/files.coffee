@@ -1,5 +1,5 @@
 module.exports =
-  template: '#files'
+  template: require './files.html'
   computed:
     isArray: -> Array.isArray(@files)
   components:

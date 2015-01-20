@@ -1,6 +1,14 @@
 module.exports =
-  template: '#file'
+  template: require './create.html'
+  created: ->
+    @$dispatch 'files', (res) =>
+      data = res.map (name) -> {text: name, value: name}
+      data.unshift text: "選択してください", value: ""
+      @$set 'list', data
+      return
+    return
   data: ->
+    list: []
     deletable: false
     filename: ""
     filepath: ""

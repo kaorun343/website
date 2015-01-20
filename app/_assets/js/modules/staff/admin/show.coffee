@@ -1,5 +1,5 @@
 module.exports =
-  template: '#show'
+  template: require './show.html'
   data: ->
     tab_id: 'lesson'
   methods:

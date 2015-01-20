@@ -1,5 +1,5 @@
 module.exports =
-  template: '#lesson'
+  template: require './lesson.html'
   data: ->
     tab_id: "video"
     length: 0

@@ -2,7 +2,7 @@ marked = require 'marked'
 moment = require 'moment'
 
 module.exports =
-  template: '#video'
+  template: require './video.html'
   filters:
     timestamp: (id) ->
       if timestamp = @$root.results[id]

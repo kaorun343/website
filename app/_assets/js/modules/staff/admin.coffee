@@ -19,7 +19,8 @@ do ($ = jQuery) ->
 
 
 app = new Vue
-  el: 'body'
+  el: '#app'
+  template: require './admin.html'
   data:
     lesson: {}
   methods:
@@ -38,6 +39,9 @@ app = new Vue
       $.getJSON "#{@base_url()}admin/staff/lesson/#{i}.json", (res) =>
         @lesson = res
         return
+      return
+    files: (func)->
+      $.getJSON "#{@base_url()}admin/staff/files.json", func
       return
 
     post: (url, data, done) ->

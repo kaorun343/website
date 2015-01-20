@@ -1,5 +1,5 @@
 module.exports =
-  template: '#file'
+  template: require './file.html'
   ready: ->
     @$set 'deletable', true
     return

@@ -1,5 +1,5 @@
 module.exports =
-  template: '#index'
+  template: require './main.html'
   data: ->
     lessons: {}
   ready: ->

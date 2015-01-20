@@ -1,5 +1,5 @@
 module.exports =
-  template: '#lesson'
+  template: require './lesson.html'
   ready: ->
     @$dispatch 'markdown', '#mark'
     return

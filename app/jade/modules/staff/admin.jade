@@ -1,33 +1,16 @@
-extends ../admin/index
+extends ../_layouts/master
 
+block config
+  - $page = "管理画面"
+  
+block style
+  - echo Asset::css(['staff/admin.css', 'bootstrap-markdown/css/bootstrap-markdown.min.css'])
+  
 block menu
   li: a(style="cursor: pointer", v-on="click: navigate('/index')") 課題一覧
   li: a(style="cursor: pointer", v-on="click: navigate('/new')") 新規作成
   
-block content
-  .container
-    
-    div(v-route)
-    hr
-  
-    script#index(type="text/template")
-      include admin/_components/index
-    script#new(type="text/template")
-      include admin/_components/new
-    script#show(type="text/template")
-      include admin/_components/show
-
-    script#lesson(type="text/template")
-      include admin/_components/lesson
-    script#question(type="text/template")
-      include admin/_components/question
-    script#questions(type="text/template")
-      include admin/_components/questions
-    script#file(type="text/template")
-      include admin/_components/file
-    script#files(type="text/template")
-      include admin/_components/files
-
 block script
+  script(src="https://code.jquery.com/jquery-2.1.1.min.js")
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
   - echo Asset::js(['bootstrap-markdown/js/bootstrap-markdown.js', 'modules/staff/admin.js'])
-  

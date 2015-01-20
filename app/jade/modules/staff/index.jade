@@ -2,9 +2,9 @@ extends ../_layouts/master
 
 block config
   - $page = "スタッフサイト"
-  
+
 block style
-  - echo Asset::css('staff/admin.css') 
+  - echo Asset::css('staff/admin.css')
 
 block menu
   //- li: a(style="cursor: pointer", v-on="click: navigate('/index')") お知らせ
@@ -12,27 +12,8 @@ block menu
   - if(Auth::get_groups()[0][1] !=1):
   li!= Html::anchor('admin/staff', '管理画面')
   - endif;
-    
-    
-block content
-  .container
-    div(v-route)
-    hr
-  
-  script#news(type="text/template")
-    include _components/news
-  script#home(type="text/template")
-    include _components/home
-  script#lesson(type="text/template")
-    include _components/lesson
-  script#video(type="text/template")
-    include _components/video
-  script#answer(type="text/template")
-    include _components/answer
-  
-  script#answerRadio(type="text/template")
-    include _components/answer/radio
-    
+
 block script
+  script(src="https://code.jquery.com/jquery-2.1.1.min.js")
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js")
   - echo Asset::js('modules/staff/app.js')
-  

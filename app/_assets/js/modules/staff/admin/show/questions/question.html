@@ -1,0 +1,43 @@
+<form v-on="submit: submit($event)">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title" v-if="deletable">
+      問{{$parent.$index+1}}.
+      （作成日時:{{created_at | timestamp}}、変更日時：{{updated_at | timestamp}}）
+    </h3>
+    <h3 class="panel-title" v-if="!deletable">
+      新規設問
+    </h3>
+  </div>
+  <div class="panel-body">
+    <div v-show="false" class="form-group">
+      <label>種類</label>
+      <select v-model="type" class="form-control">
+        <option value="radio" selected>選択問題</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>問題文</label>
+      <input type="text" required v-model="sentence" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>選択肢と答え</label>
+      <div v-repeat="choices" class="input-group"><span class="input-group-addon">
+        <input type="radio" name="answer" value="{{$index}}" v-model="answer"></span>
+        <input type="text" required v-model="$value" v-on="keyup: edit($index, $value)" class="form-control">
+        <span class="input-group-btn">
+          <button type="button" v-on="click: splice($index)" class="btn btn-danger">
+            <span>削除</span>
+          </button>
+        </span>
+      </div>
+      <button type="button" v-on="click: add" class="btn btn-default">追加</button>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-primary">保存</button>
+      <button type="button" v-show="deletable" v-on="click: delete" class="btn btn-danger">削除</button>
+    </div>
+</div>
+
+</form>

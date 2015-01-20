@@ -1,0 +1,6 @@
+<h3 class="page-header">問{{$parent.index+1}}. {{sentence}}</h3>
+<div v-repeat="choices" class="radio">
+  <label>
+    <input type="radio" name="question{{id}}" value="{{$index}}" v-model="model">{{$value}}
+  </label>
+</div>

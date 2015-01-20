@@ -1,2 +1,2 @@
 module.exports =
-  template: '#news'
+  template: require './news.html'

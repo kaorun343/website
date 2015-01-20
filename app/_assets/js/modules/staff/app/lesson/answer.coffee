@@ -1,5 +1,7 @@
 module.exports =
-  template: '#answer'
+  template: require './answer.html'
+  components:
+    radio: require './answer/radio'
   data: ->
     #現在解いている問題を全問正解したかどうか
     clear: false
@@ -48,6 +50,3 @@ module.exports =
         backdrop: 'static'
         keyboard: false
       return
-  components:
-    'radio':
-      template: '#answerRadio'

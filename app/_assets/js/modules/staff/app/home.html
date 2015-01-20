@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>課題一覧</h1>
+</div>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th></th>
+      <th>課題名</th>
+      <th>資料</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-repeat="$root.lessons">
+      <td>
+        <span v-if="id | hasCleared" class="label label-success">完了</span>
+        <span v-show="id | hasNotCleared" class="label label-warning">未完了</span>
+      </td>
+      <td>
+        <a style="cursor: pointer" v-on="click: $root.navigate('/lesson/'+id)">{{title}}</a>
+      </td>
+      <td>
+        <div v-show="id | hasCleared" class="dropdown">
+          <a type="button" data-toggle="dropdown" aria-expand="false" style="cursor: pointer" class="dropdown-toggle">
+            ダウンロード <span class="caret"></span>
+          </a>
+          <ul role="menu" class="dropdown-menu dropdown-menu-right">
+            <li v-repeat="files"><a v-attr="href: base+'staff/download/'+id">{{filename}}</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

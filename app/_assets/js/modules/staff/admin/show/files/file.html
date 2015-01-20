@@ -1,0 +1,26 @@
+<form v-on="submit: submit($event)">
+  <div class="panel panel-default">
+    <div v-if="deletable" class="panel-heading">
+      <h3 class="panel-title">
+        ファイル{{$parent.$index+1}}.
+        （作成日時:{{created_at | timestamp}}、変更日時：{{updated_at | timestamp}}）
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>ファイル名</label>
+        <input type="text" required v-model="filename" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>ファイルの場所</label>
+        <div>{{filepath}}</div>
+      </div>
+
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn btn-primary">保存</button>
+      <button type="button" v-on="click: delete" class="btn btn-danger">削除</button>
+    </div>
+  </div>
+
+</form>

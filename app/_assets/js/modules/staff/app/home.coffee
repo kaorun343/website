@@ -1,5 +1,10 @@
 module.exports =
-  template: '#home'
+  template: require './home.html'
+  data: ->
+    base: ""
+  ready: ->
+    @base = $('meta[name="_base"]').attr('content')
+    return
   filters:
     hasCleared: (id) ->
       @$root.results[id]

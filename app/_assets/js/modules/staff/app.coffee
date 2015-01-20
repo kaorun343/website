@@ -3,7 +3,8 @@ route = require 'vue-route'
 Vue.use route
 
 app = new Vue
-  el: 'body'
+  el: '#app'
+  template: require './app.html'
   data:
     news: {}
     schedules: {}

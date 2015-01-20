@@ -3,7 +3,7 @@ module.exports =
     title: ""
     video_id: ""
     body: ""
-  template: '#new'
+  template: require './show/lesson.html'
   ready: ->
     @$dispatch 'markdown', '#mark'
     return

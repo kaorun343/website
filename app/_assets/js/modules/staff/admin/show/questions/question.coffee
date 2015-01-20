@@ -2,7 +2,7 @@ module.exports =
   ready: ->
     @$set 'deletable', true
     return
-  template: '#question'
+  template: require './question.html'
   mixins: [require './_mixin']
   methods:
 

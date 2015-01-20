@@ -1,0 +1,7 @@
+<h3 class="page-header">設問設定</h3>
+<div v-repeat="q: questions">
+  <div v-component="question" v-with="q"></div>
+</div>
+<div v-show="isArray" role="alert" class="alert alert-warning">設問がありません</div>
+<h3 class="page-header">新規設問</h3>
+<div v-component="new_question"></div>
