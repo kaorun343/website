@@ -63,4 +63,4 @@ gulp.task 'clean', (cb) ->
 gulp.task 'watch', ['build'], ->
   gulp.watch './app/jade/**/*.jade', ['jade']
   gulp.watch './app/coffee/**/*.coffee', ['coffee']
-  gulp.watch './app/less/**/*.js', ['less']
+  gulp.watch './app/less/**/*.less', ['less']

@@ -32,7 +32,6 @@ app = new Vue
     timestamp: (value) ->
       if value
         moment.unix(value).format "MM月DD日 HH時mm分"
-  ready: ->
   events:
     lesson: (id) ->
       i = if id then id else @lesson.id
@@ -82,175 +81,15 @@ app = new Vue
       return
 
   components:
-    'index':
-      template: '#index'
-      data: ->
-        data =
-          lessons: {}
-      ready: ->
-        base = $('meta[name="_base"]').attr('content')
-        $.getJSON "#{base}api/staff/lessons.json", (res) =>
-          @lessons = res
-          return
-        return
-    'new':
-      data: ->
-        data =
-          title: ""
-          video_id: ""
-          body: ""
-      template: '#new'
-      ready: ->
-        @$dispatch 'markdown', '#mark'
-        return
-      methods:
-        submit: (e) ->
-          e.preventDefault()
-          base = $('meta[name="_base"]').attr('content')
-          $.ajax
-            type: "POST"
-            dataType: "json"
-            headers:
-              'X-Csrf-Token': fuel_csrf_token()
-            url: "#{base}admin/staff/lesson"
-            data: @$data
-          .done (json) =>
-            console.log json
-            @$root.navigate("/lesson/#{json.id}")
-            return
-          return
-    'show':
-      template: '#show'
-      data: ->
-        data =
-          tab_id: 'lesson'
-      methods:
-        tab: (tabname)->
-          @tab_id = tabname
-          return
-    'lesson':
-      template: '#lesson'
-      ready: ->
-        @$dispatch 'markdown', '#mark'
-        return
-      methods:
-        submit: (e) ->
-          e.preventDefault()
-          data =
-            title: @$data.title
-            video_id: @$data.video_id
-            body: @$data.body
-          @$dispatch 'put', "", data, (res)->
-            return
-          return
-    'questions':
-      template: '#questions'
-      computed:
-        isArray: ->
-          Array.isArray(@questions)
-      components:
-        'question':
-          ready: ->
-            @$set 'deletable', true
-            return
-          template: '#question'
-          methods:
-            # 選択肢の編集に関するメソッド
-            edit: (index, value) ->
-              @choices[index] = value
-              return
-            add: ->
-              @choices.push ""
-              return
-            splice: (index) ->
-              @choices.splice index, 1
-              return
-
-            submit: (e) ->
-              e.preventDefault()
-              @$dispatch 'put', "/question/#{@id}", @$data, (res) ->
-                return
-              return
-            delete: ->
-              @$dispatch 'del', "/question/#{@id}", (res) =>
-                @$dispatch 'lesson'
-                return
-              return
-        'new_question':
-          template: '#question'
-          data: ->
-            data =
-              deletable: false
-              sentence: ""
-              answer: "0"
-              choices: [""]
-          methods:
-            # 選択肢の編集に関するメソッド
-            edit: (index, value) ->
-              @choices[index] = value
-              return
-            add: ->
-              @choices.push ""
-              return
-            splice: (index) ->
-              @choices.splice index, 1
-              return
-
-            submit: (e) ->
-              e.preventDefault()
-              @$dispatch 'post', "/question", @$data, (res) =>
-                @$dispatch 'lesson'
-                @sentence = ""
-                @answer = "0"
-                @choices = [""]
-                return
-              return
-            delete: -> return
-    'files':
-      template: '#files'
-      computed:
-        isArray: ->
-          Array.isArray(@files)
-      components:
-        'file':
-          template: '#file'
-          ready: ->
-            @$set 'deletable', true
-            return
-          methods:
-            submit: (e) ->
-              e.preventDefault()
-              @$dispatch 'put', "/file/#{@id}", @$data, (res) ->
-                return
-              return
-            delete: ->
-              @$dispatch 'del', "/file/#{@id}", (res) =>
-                @$dispatch 'lesson'
-                return
-              return
-        'new_file':
-          template: '#file'
-          data: ->
-            data =
-              deletable: false
-              filename: ""
-              filepath: ""
-          methods:
-            submit: (e) ->
-              e.preventDefault()
-              @$dispatch 'post', "/file", @$data, (res) =>
-                @$dispatch 'lesson'
-                @filename = ""
-                @filepath = ""
-                return
-              return
-            delete: -> return
+    index: require './admin/main'
+    create: require './admin/create'
+    show: require './admin/show'
   routes:
     '/index':
       isDefault: true
       componentId: 'index'
     '/new':
-      componentId: 'new'
+      componentId: 'create'
     '/lesson/:id':
       componentId: 'show'
       afterUpdate: (location, oldLocation) ->
