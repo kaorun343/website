@@ -57,6 +57,7 @@ app = new Vue
     news: require './app/news'
     home: require './app/home'
     lesson: require './app/lesson'
+    downloads: require './app/downloads'
 
   routes:
     options:
@@ -81,4 +82,10 @@ app = new Vue
       afterUpdate: (location, oldLocation) ->
         document.title = "課題#{location.params.id} | スタッフサイト"
         @$emit 'lesson', location.params.id
+        return
+
+    '/downloads':
+      componentId: 'downloads'
+      afterUpdate: (location, oldLocation) ->
+        document.title = "資料一覧 | スタッフサイト"
         return

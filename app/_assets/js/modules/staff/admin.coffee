@@ -88,6 +88,7 @@ app = new Vue
     index: require './admin/main'
     create: require './admin/create'
     show: require './admin/show'
+    downloads: require './admin/downloads'
   routes:
     '/index':
       isDefault: true
@@ -99,6 +100,8 @@ app = new Vue
       afterUpdate: (location, oldLocation) ->
         @$emit 'lesson', location.params.id
         return
+    '/downloads':
+      componentId: 'downloads'
     options:
       hashbang: true
       click: false

@@ -37,4 +37,12 @@ class Controller_Api extends Controller_Base
         $result = Model_User::find($user_id)->result;
         return $this->response($result->lessons);
     }
+
+    public function get_downloads()
+    {
+        $files = Model_File::find('all', [
+            'where' => [['lesson_id', 0],],
+        ]);
+        return $this->response($files);
+    }
 }

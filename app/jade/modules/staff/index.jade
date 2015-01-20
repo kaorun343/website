@@ -9,6 +9,7 @@ block style
 block menu
   //- li: a(style="cursor: pointer", v-on="click: navigate('/index')") お知らせ
   li: a(style="cursor: pointer", v-on="click: navigate('/list')") 課題一覧
+  li: a(style="cursor: pointer", v-on="click: navigate('/downloads')") 資料一覧
   - if(Auth::get_groups()[0][1] !=1):
   li!= Html::anchor('admin/staff', '管理画面')
   - endif;

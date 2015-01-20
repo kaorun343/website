@@ -50,6 +50,6 @@ gulp.task 'clean', (cb) ->
     cb
   return
 
-gulp.task 'watch', ['build'], ->
+gulp.task 'watch', ['jade, less'], ->
   gulp.watch './app/jade/**/*.jade', ['jade']
   gulp.watch './app/less/**/*.less', ['less']
