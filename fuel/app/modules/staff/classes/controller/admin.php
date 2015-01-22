@@ -208,8 +208,43 @@ class Controller_Admin extends Controller_Base
     public function delete_download($file_id)
     {
         $file = Model_File::find($file_id);
-        $lesson = $file->lesson;
         $file->delete();
+        return $this->response(null);
+    }
+
+    public function post_article()
+    {
+        $article = Model_Article::forge(\Input::post());
+        try
+        {
+            $article->save();
+            return $this->response($article);
+        }
+        catch (\Orm\ValidationFailed $e)
+        {
+            return $this->response($e->getMessage(), 403);
+        }
+    }
+
+    public function put_article($id)
+    {
+        $article = Model_Article::find($id);
+        try
+        {
+            $article->set(\Input::put());
+            $article->save();
+            return $this->response($article);
+        }
+        catch (\Orm\ValidationFailed $e)
+        {
+            return $this->response($e->getMessage(), 403);
+        }
+    }
+
+    public function delete_article($id)
+    {
+        $article = Model_Article::find($id);
+        $article->delete();
         return $this->response(null);
     }
 

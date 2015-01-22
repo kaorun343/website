@@ -8,7 +8,6 @@ module.exports = (option)->
     entry:
       "modules/staff/app": "#{src}/modules/staff/app.coffee"
       "modules/staff/admin": "#{src}/modules/staff/admin.coffee"
-    target: 'node-webkit'
     output:
       filename: "#{dest}/[name].js"
     resolve:

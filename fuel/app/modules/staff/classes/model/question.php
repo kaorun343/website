@@ -68,10 +68,4 @@ class Model_Question extends \Orm\Model
 
 	protected static $_belongs_to = ['lesson'];
 
-	public function _event_after_load()
-	{
-		// JavaScriptで利用するためにプロパティを追加
-		$this->model="";
-	}
-
 }
