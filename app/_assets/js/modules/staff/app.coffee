@@ -1,37 +1,41 @@
 Vue = require 'vue'
 route = require 'vue-route'
 Vue.use route
+moment = require 'moment'
 
 app = new Vue
   el: '#app'
   template: require './app.html'
   data:
-    news: {}
-    schedules: {}
     lessons: {}
     lesson: {}
     results: {}
+    articles: []
+    downloads: {}
+
+  filters:
+    timestamp: (val) -> moment.unix(val).format "MM月DD日" if val
 
   methods:
     navigate: (path) ->
       Vue.navigate("#{path}")
       return
     base_url: -> $('meta[name="_base"]').attr('content')
-    get_lessons: ->
-      $.getJSON "#{@base_url()}api/staff/lessons", (json) =>
-        @lessons = json
-        return
-    get_results: ->
-      $.getJSON "#{@base_url()}api/staff/results", (json) =>
-        @results = json
-        return
 
   ready: ->
-    @get_lessons()
-    @get_results()
+    $.getJSON "#{@base_url()}api/staff/index", (data) =>
+      for key, value of data
+        @$set key, value
+      return
     return
 
   events:
+    'api:get': (str) ->
+      $.getJSON "#{@base_url()}api/staff/#{str}", (json) =>
+        @$set str, json
+        return
+      return
+
     lesson: (id) ->
       $.getJSON "#{@base_url()}api/staff/lesson/#{id}", (json) =>
         @lesson = json
@@ -40,9 +44,7 @@ app = new Vue
       return
 
     result: ->
-      if @results[@lesson.id]
-        return
-      else
+      unless @results[@lesson.id]
         $.ajax
           type: "POST"
           dataType: "json"
@@ -51,7 +53,8 @@ app = new Vue
             'X-Csrf-Token': fuel_csrf_token()
         .done (json) =>
           @results = json
-        return
+          return
+      return
 
   components:
     news: require './app/news'
@@ -66,26 +69,19 @@ app = new Vue
 
     '/index':
       componentId: 'news'
+      isDefault: true
       afterUpdate: (location, oldLocation) ->
         document.title = "スタッフサイト"
         return
 
-    '/list':
+    '/lessons':
       componentId: 'home'
-      isDefault: true
       afterUpdate: (location, oldLocation) ->
         document.title = "課題一覧 | スタッフサイト"
         return
 
-    '/lesson/:id':
+    '/lessons/:id':
       componentId: 'lesson'
       afterUpdate: (location, oldLocation) ->
         document.title = "課題#{location.params.id} | スタッフサイト"
         @$emit 'lesson', location.params.id
-        return
-
-    '/downloads':
-      componentId: 'downloads'
-      afterUpdate: (location, oldLocation) ->
-        document.title = "資料一覧 | スタッフサイト"
-        return

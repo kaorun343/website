@@ -1,6 +1,11 @@
-<div class="page-header">
-  <h1>資料一覧</h1>
+<h2>配布データ</h2>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">配布データのリストです。</h3>
+  </div>
+  <div class="list-group">
+    <a v-repeat="$root.downloads" v-attr="href: url+id" class="list-group-item">
+      {{filename}}
+    </a>
+  </div>
 </div>
-<ul>
-  <li v-repeat="files"><a v-attr="href: base+'staff/download/'+id">{{filename}}</a></li>
-</ul>

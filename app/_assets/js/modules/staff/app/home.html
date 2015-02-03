@@ -16,7 +16,7 @@
         <span v-show="id | hasNotCleared" class="label label-warning">未完了</span>
       </td>
       <td>
-        <a style="cursor: pointer" v-on="click: $root.navigate('/lesson/'+id)">{{title}}</a>
+        <a style="cursor: pointer" v-on="click: $root.navigate('/lessons/'+id)">{{title}}</a>
       </td>
       <td>
         <div v-show="id | hasCleared" class="dropdown">

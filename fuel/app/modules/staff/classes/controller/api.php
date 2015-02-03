@@ -2,8 +2,20 @@
 
 namespace Staff;
 
+use Staff\Model_Api as Api;
+
 class Controller_Api extends Controller_Base
 {
+    public function get_index()
+    {
+        $data = [
+            'lessons' => Api::lessons(),
+            'results' => Api::results(),
+            'downloads' => Api::downloads(),
+            'articles' => Api::articles(),
+        ];
+        return $this->response($data);
+    }
 
     public function get_lesson($id)
     {
@@ -13,7 +25,7 @@ class Controller_Api extends Controller_Base
 
     public function get_lessons()
     {
-        $lessons = Model_Lesson::find('all', ['related' => ['files']]);
+        $lessons = Api::lessons();
         return $this->response($lessons);
     }
 
@@ -33,16 +45,16 @@ class Controller_Api extends Controller_Base
 
     public function get_results()
     {
-        $user_id = \Auth::get_user_id()[1];
-        $result = Model_User::find($user_id)->result;
-        return $this->response($result->lessons);
+        return $this->response(Api::results());
     }
 
     public function get_downloads()
     {
-        $files = Model_File::find('all', [
-            'where' => [['lesson_id', 0],],
-        ]);
-        return $this->response($files);
+        return $this->response(Api::downloads());
+    }
+
+    public function get_articles()
+    {
+        return $this->response(Api::articles());
     }
 }
