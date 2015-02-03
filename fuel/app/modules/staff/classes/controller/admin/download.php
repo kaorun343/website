@@ -2,7 +2,7 @@
 
 namespace Staff;
 
-class Controller_Admin_File extends Controller_Base
+class Controller_Admin_Download extends Controller_Base
 {
 
     public function post_index()
