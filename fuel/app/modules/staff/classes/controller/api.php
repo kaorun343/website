@@ -23,12 +23,6 @@ class Controller_Api extends Controller_Base
         return $this->response($lesson);
     }
 
-    public function get_lessons()
-    {
-        $lessons = Api::lessons();
-        return $this->response($lessons);
-    }
-
     public function post_result($lesson_id)
     {
         $user_id = \Auth::get_user_id()[1];
@@ -41,6 +35,11 @@ class Controller_Api extends Controller_Base
         $user->save();
 
         return $this->response($user->result->lessons);
+    }
+
+    public function get_lessons()
+    {
+        return $this->response(Api::lessons());
     }
 
     public function get_results()
