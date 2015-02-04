@@ -24,7 +24,7 @@
       <label>選択肢と答え</label>
       <div v-repeat="choices" class="input-group"><span class="input-group-addon">
         <input type="radio" name="answer" value="{{$index}}" v-model="answer"></span>
-        <input type="text" required v-model="$value" v-on="keyup: edit($index, $value)" class="form-control">
+        <input type="text" required v-model="$value" v-on="input: edit($index, $value)" class="form-control">
         <span class="input-group-btn">
           <button type="button" v-on="click: splice($index)" class="btn btn-danger">
             <span>削除</span>

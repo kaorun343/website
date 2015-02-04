@@ -10,14 +10,13 @@ module.exports =
   methods:
     base_url: -> $('meta[name="_base"]').attr('content')
     downloads: ->
-      $.getJSON "#{@base_url()}api/staff/downloads.json", (json) =>
-        @files = json
+      $.getJSON "#{@base_url()}api/staff/downloads.json", (@lessons) =>
         return
       return
   events:
     lesson: ->
       @downloads()
-      return false
+      false
 
     post: (url, data, done) ->
       $.ajax
@@ -28,7 +27,7 @@ module.exports =
         url: "#{@base_url()}admin/staff/download"
         data: data
       .done done
-      return false
+      false
 
     put: (url, data, done) ->
       array = url.split('/')
@@ -41,7 +40,7 @@ module.exports =
         url: "#{@base_url()}admin/staff/download/#{id}"
         data: data
       .done done
-      return false
+      false
 
     del: (url, done) ->
       array = url.split('/')
@@ -53,4 +52,4 @@ module.exports =
           'X-Csrf-Token': fuel_csrf_token()
         url: "#{@base_url()}admin/staff/download/#{id}"
       .done done
-      return false
+      false

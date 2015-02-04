@@ -15,7 +15,7 @@ module.exports =
   methods:
     submit: (e) ->
       e.preventDefault()
-      @$dispatch 'post', "/file", @$data, (res) =>
+      @$dispatch 'post', "/file", @$data, =>
         @$dispatch 'lesson'
         @filename = ""
         @filepath = ""

@@ -1,25 +1,15 @@
 <div class="page-header">
   <h1>課題{{$root.lesson.id}}</h1>
 </div>
-<ul class="nav nav-tabs nav-justified">
-  <li v-class="active: tab_id==='lesson'">
-    <a style="cursor: pointer" v-on="click: tab('lesson')">課題</a>
-  </li>
-  <li v-class="active: tab_id==='questions'">
-    <a style="cursor: pointer" v-on="click: tab('questions')">設問</a>
-  </li>
-  <li v-class="active: tab_id==='files'">
-    <a style="cursor: pointer" v-on="click: tab('files')">ファイル</a>
-  </li>
-</ul>
+<bs-tabbar tabs="{{tabs}}" active="{{active}}"></bs-tabbar>
 <div class="tab-content">
-  <div role="tabpanel" v-class="active: tab_id==='lesson'" class="tab-pane">
+  <div role="tabpanel" v-class="active: active==='lesson'" class="tab-pane">
     <div v-component="lesson" v-with="$root.lesson"></div>
   </div>
-  <div role="tabpanel" v-class="active: tab_id==='questions'" class="tab-pane">
+  <div role="tabpanel" v-class="active: active==='questions'" class="tab-pane">
     <div v-component="questions" v-with="questions: $root.lesson.questions"></div>
   </div>
-  <div role="tabpanel" v-class="active: tab_id==='files'" class="tab-pane">
+  <div role="tabpanel" v-class="active: active==='files'" class="tab-pane">
     <div v-component="files" v-with="files: $root.lesson.files"></div>
   </div>
 </div>

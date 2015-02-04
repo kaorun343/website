@@ -1,12 +1,14 @@
 module.exports =
   template: require './lesson.html'
   data: ->
-    tab_id: "video"
-    length: 0
-  methods:
-    tab: (tabname) ->
-      @tab_id = tabname
-      return
+    tabs:
+      'video':  '動画'
+      'answer': '設問'
+    active: "video"
+  events:
+    'bs:tabbar:clicked': (tabId) ->
+      @active = tabId
+      false
   components:
-    video: require './lesson/video'
+    video:  require './lesson/video'
     answer: require './lesson/answer'

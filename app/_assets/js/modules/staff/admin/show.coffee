@@ -1,12 +1,16 @@
 module.exports =
   template: require './show.html'
   data: ->
-    tab_id: 'lesson'
-  methods:
-    tab: (tabname)->
-      @tab_id = tabname
-      return
+    active: 'lesson'
+    tabs:
+      'lesson':    '課題'
+      'questions': '設問'
+      'files':     'ファイル'
+  events:
+    'bs:tabbar:clicked': (tabId) ->
+      @active = tabId
+      false
   components:
-    lesson: require './show/lesson'
+    lesson:    require './show/lesson'
     questions: require './show/questions'
-    files: require './show/files'
+    files:     require './show/files'

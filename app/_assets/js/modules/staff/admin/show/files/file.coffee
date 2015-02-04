@@ -6,11 +6,11 @@ module.exports =
   methods:
     submit: (e) ->
       e.preventDefault()
-      @$dispatch 'put', "/file/#{@id}", @$data, (res) ->
+      @$dispatch 'put', "/file/#{@id}", @$data, ->
         return
       return
     delete: ->
-      @$dispatch 'del', "/file/#{@id}", (res) =>
+      @$dispatch 'del', "/file/#{@id}", =>
         @$dispatch 'lesson'
         return
       return

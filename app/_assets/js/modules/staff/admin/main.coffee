@@ -4,7 +4,6 @@ module.exports =
     lessons: {}
   ready: ->
     base = $('meta[name="_base"]').attr('content')
-    $.getJSON "#{base}api/staff/lessons.json", (res) =>
-      @lessons = res
+    $.getJSON "#{base}api/staff/lessons.json", (@lessons) =>
       return
     return

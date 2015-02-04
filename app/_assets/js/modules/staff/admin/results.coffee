@@ -6,7 +6,6 @@ module.exports =
     base: $('meta[name="_base"]').attr('content')
     results: {}
   compiled: ->
-    $.getJSON "#{@base}admin/staff/results", (json) =>
-      @results = json
+    $.getJSON "#{@base}admin/staff/results", (@results) =>
       return
     return

@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs nav-justified">
+  <li role="presentaion" v-repeat="tabs" v-class="active: active == $key">
+    <a style="cursor: pointer" v-on="click: activate($key)">{{$value}}</a>
+  </li>
+</ul>

@@ -10,7 +10,7 @@ module.exports =
     ja: (value) -> if value then '正解' else '不正解'
   methods:
     save: ->
-      @$set 'results', @$.questions.map (q) -> q.getData()
+      @results =  @$.questions.map (q) -> q.getData()
 
       if @results.reduce ((t, q) -> if q.result then t else false), true
         @clear = true

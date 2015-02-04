@@ -1,20 +1,23 @@
-Vue = require 'vue'
+Vue   = require 'vue'
 route = require 'vue-route'
 Vue.use route
 
-marked = require 'marked'
+bootstrap = require 'vue-bootstrap'
+Vue.use bootstrap
+
+marked        = require 'marked'
 window.marked = marked
-moment = require 'moment'
+moment        = require 'moment'
 
 do ($ = jQuery) ->
   $.fn.markdown.messages['ja'] =
-    'Bold': '太字'
-    'Italic': '斜体'
-    'Heading': '見出し'
-    'URL/Link': 'リンク'
+    'Bold':           '太字'
+    'Italic':         '斜体'
+    'Heading':        '見出し'
+    'URL/Link':       'リンク'
     'Unordered List': 'リスト'
-    'Ordered List': '順序付きリスト'
-    'Preview': 'プレビュー'
+    'Ordered List':   '順序付きリスト'
+    'Preview':        'プレビュー'
   return
 
 
@@ -27,17 +30,13 @@ app = new Vue
     navigate: (path) ->
       Vue.navigate("#{path}")
       return
-    base_url: ->
-      $('meta[name="_base"]').attr('content')
+    base_url: -> $('meta[name="_base"]').attr('content')
   filters:
-    timestamp: (value) ->
-      if value
-        moment.unix(value).format "MM月DD日 HH時mm分"
+    timestamp: (value) -> moment.unix(value).format "MM月DD日 HH時mm分" if value
   events:
     lesson: (id) ->
-      i = if id then id else @lesson.id
-      $.getJSON "#{@base_url()}admin/staff/lesson/#{i}.json", (res) =>
-        @lesson = res
+      i = id or @lesson.id
+      $.getJSON "#{@base_url()}admin/staff/lesson/#{i}.json", (@lesson) =>
         return
       return
     files: (func)->
@@ -85,21 +84,21 @@ app = new Vue
       return
 
   components:
-    index: require './admin/main'
-    create: require './admin/create'
-    show: require './admin/show'
+    index:     require './admin/main'
+    create:    require './admin/create'
+    show:      require './admin/show'
     downloads: require './admin/downloads'
-    results: require './admin/results'
+    results:   require './admin/results'
   routes:
     '/index':
-      isDefault: true
+      isDefault:   true
       componentId: 'index'
     '/new':
       componentId: 'create'
     '/lesson/:id':
       componentId: 'show'
-      afterUpdate: (location, oldLocation) ->
-        @$emit 'lesson', location.params.id
+      afterUpdate: ({params}) ->
+        @$emit 'lesson', params.id
         return
     '/downloads':
       componentId: 'downloads'
@@ -107,4 +106,4 @@ app = new Vue
       componentId: 'results'
     options:
       hashbang: true
-      click: false
+      click:    false

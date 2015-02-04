@@ -3,9 +3,8 @@ module.exports =
   data: ->
     model: ""
   methods:
-    validate: ->
-      "#{@model}" is "#{@question.answer}"
+    validate: -> "#{@model}" is "#{@question.answer}"
     getData: ->
-      model: @question.choices[@model]
+      model:    @question.choices[@model]
       sentence: @question.sentence
-      result: @validate()
+      result:   @validate()

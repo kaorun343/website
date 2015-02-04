@@ -18,8 +18,7 @@ module.exports =
           'X-Csrf-Token': fuel_csrf_token()
         url: "#{base}admin/staff/lesson"
         data: @$data
-      .done (json) =>
-        console.log json
-        @$root.navigate("/lesson/#{json.id}")
+      .done ({id}) =>
+        @$root.navigate("/lesson/#{id}")
         return
       return

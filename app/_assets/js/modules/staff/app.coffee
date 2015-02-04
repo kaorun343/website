@@ -1,16 +1,20 @@
-Vue = require 'vue'
+Vue   = require 'vue'
 route = require 'vue-route'
 Vue.use route
+
+bootstrap = require 'vue-bootstrap'
+Vue.use bootstrap
+
 moment = require 'moment'
 
 app = new Vue
   el: '#app'
   template: require './app.html'
   data:
-    lessons: {}
-    lesson: {}
-    results: {}
-    articles: []
+    lessons:   {}
+    lesson:    {}
+    results:   {}
+    articles:  []
     downloads: {}
 
   filters:
@@ -37,8 +41,7 @@ app = new Vue
       return
 
     lesson: (id) ->
-      $.getJSON "#{@base_url()}api/staff/lesson/#{id}", (json) =>
-        @lesson = json
+      $.getJSON "#{@base_url()}api/staff/lesson/#{id}", (@lesson) =>
         @$broadcast 'count', Object.keys(@lesson.questions)
         return
       return
@@ -51,37 +54,36 @@ app = new Vue
           url: "#{@base_url()}api/staff/lesson/#{@lesson.id}/result"
           headers:
             'X-Csrf-Token': fuel_csrf_token()
-        .done (json) =>
-          @results = json
+        .done (@results) =>
           return
       return
 
   components:
-    news: require './app/news'
-    home: require './app/home'
-    lesson: require './app/lesson'
+    news:      require './app/news'
+    home:      require './app/home'
+    lesson:    require './app/lesson'
     downloads: require './app/downloads'
 
   routes:
     options:
       hashbang: true
-      click: false
+      click:    false
 
     '/index':
       componentId: 'news'
       isDefault: true
-      afterUpdate: (location, oldLocation) ->
+      afterUpdate: (location) ->
         document.title = "スタッフサイト"
         return
 
     '/lessons':
       componentId: 'home'
-      afterUpdate: (location, oldLocation) ->
+      afterUpdate: (location) ->
         document.title = "課題一覧 | スタッフサイト"
         return
 
     '/lessons/:id':
       componentId: 'lesson'
-      afterUpdate: (location, oldLocation) ->
-        document.title = "課題#{location.params.id} | スタッフサイト"
-        @$emit 'lesson', location.params.id
+      afterUpdate: ({params}) ->
+        document.title = "課題#{params.id} | スタッフサイト"
+        @$emit 'lesson', params.id
