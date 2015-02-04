@@ -27,7 +27,7 @@ class Model_Api extends \Model
     {
         $dir = DOCROOT.'files/modules/staff/articles';
         $parser = new \Mni\FrontYAML\Parser();
-        return array_map(
+        $articles = array_map(
             function($filename) use($dir, $parser) {
                 $file = \File::read($dir.'/'.$filename, true);
                 $document = $parser->parse($file);
@@ -37,5 +37,6 @@ class Model_Api extends \Model
             },
             \File::read_dir($dir, 1)
         );
+        return array_reverse($articles);
     }
 }
