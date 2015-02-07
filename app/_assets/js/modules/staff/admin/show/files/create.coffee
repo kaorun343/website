@@ -1,6 +1,7 @@
+Vue = require 'vue'
 {File} = require 'modules::staff.admin.models'
 
-module.exports =
+module.exports = Vue.extend
   template: require './create.html'
   created: ->
     File.getAll().done (res) =>

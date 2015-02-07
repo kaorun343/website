@@ -29,4 +29,9 @@ class Controller_Admin extends Controller_Base
     {
         return $this->response(Api::lessons());
     }
+
+    public function get_downloads()
+    {
+        return $this->response(Api::downloads());
+    }
 }
