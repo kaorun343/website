@@ -1,21 +1,23 @@
+{File} = require 'modules::staff.admin.models'
+
 module.exports =
   template: require './create.html'
   created: ->
-    @$dispatch 'files', (res) =>
+    File.getAll().done (res) =>
       data = res.map (name) -> {text: name, value: name}
       data.unshift text: "選択してください", value: ""
       @$set 'list', data
       return
     return
   data: ->
-    list: []
+    list:      []
     deletable: false
-    filename: ""
-    filepath: ""
+    filename:  ""
+    filepath:  ""
   methods:
     submit: (e) ->
       e.preventDefault()
-      @$dispatch 'post', "/file", @$data, =>
+      File.post(@lesson_id, @$data).done =>
         @$dispatch 'lesson'
         @filename = ""
         @filepath = ""

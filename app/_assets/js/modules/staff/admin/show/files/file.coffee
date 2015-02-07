@@ -1,3 +1,5 @@
+{File} = require 'modules::staff.admin.models'
+
 module.exports =
   template: require './file.html'
   ready: ->
@@ -6,11 +8,10 @@ module.exports =
   methods:
     submit: (e) ->
       e.preventDefault()
-      @$dispatch 'put', "/file/#{@id}", @$data, ->
-        return
+      File.put(@lesson_id, @id, @$data)
       return
     delete: ->
-      @$dispatch 'del', "/file/#{@id}", =>
+      File.delete(@lesson_id, @id).done =>
         @$dispatch 'lesson'
         return
       return

@@ -1,3 +1,5 @@
+{Lesson} = require 'modules::staff.admin.models'
+
 module.exports =
   template: require './lesson.html'
   ready: ->
@@ -6,10 +8,6 @@ module.exports =
   methods:
     submit: (e) ->
       e.preventDefault()
-      data =
-        title: @$data.title
-        video_id: @$data.video_id
-        body: @$data.body
-      @$dispatch 'put', "", data, (res)->
-        return
+      {title, video_id, body} = @$data
+      Lesson.put(@id, {title, video_id, body})
       return

@@ -2,6 +2,7 @@ src            = './app/_assets/js'
 dest           = './assets'
 path           = require 'path'
 webpack        = require 'webpack'
+mPath = "#{__dirname}/app/_assets/js/modules"
 
 module.exports = ({watch}) ->
   watch: watch
@@ -14,6 +15,7 @@ module.exports = ({watch}) ->
     extensions: ["", ".js", ".coffee"]
     alias:
       'vue-bootstrap': "#{__dirname}/app/_assets/js/bootstrap/index.coffee"
+      'modules::staff.admin.models': "#{mPath}/staff/admin/models/index.coffee"
   module:
     loaders: [
       { test: /\.coffee$/, loader: 'coffee-loader' },

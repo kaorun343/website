@@ -1,7 +1,7 @@
 <h3 class="page-header">ファイル設定</h3>
 <div v-repeat="f: files">
-  <div v-component="file" v-with="f"></div>
+  <div v-component="file" v-with="f, lesson_id: id"></div>
 </div>
 <div v-show="isArray" role="alert" class="alert alert-warning">ファイルがありません</div>
 <h3 class="page-header">新規ファイル</h3>
-<div v-component="new_file"></div>
+<div v-component="new_file" v-with="lesson_id: id"></div>

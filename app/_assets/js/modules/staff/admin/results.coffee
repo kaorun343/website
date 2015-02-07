@@ -1,11 +1,11 @@
+{Result} = require 'modules::staff.admin.models'
+
 module.exports =
   template: require './results.html'
   components:
     user: require './results/user'
   data: ->
-    base: $('meta[name="_base"]').attr('content')
     results: {}
-  compiled: ->
-    $.getJSON "#{@base}admin/staff/results", (@results) =>
-      return
+  ready: ->
+    Result.getAll().done (@results) => return
     return

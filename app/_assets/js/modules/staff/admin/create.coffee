@@ -1,3 +1,5 @@
+{Lesson} = require 'modules::staff.admin.models'
+
 module.exports =
   data: ->
     title: ""
@@ -10,15 +12,7 @@ module.exports =
   methods:
     submit: (e) ->
       e.preventDefault()
-      base = $('meta[name="_base"]').attr('content')
-      $.ajax
-        type: "POST"
-        dataType: "json"
-        headers:
-          'X-Csrf-Token': fuel_csrf_token()
-        url: "#{base}admin/staff/lesson"
-        data: @$data
-      .done ({id}) =>
+      Lesson.post(@$data).done ({id}) =>
         @$root.navigate("/lesson/#{id}")
         return
       return

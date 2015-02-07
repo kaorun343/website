@@ -7,9 +7,9 @@
     <div v-component="lesson" v-with="$root.lesson"></div>
   </div>
   <div role="tabpanel" v-class="active: active==='questions'" class="tab-pane">
-    <div v-component="questions" v-with="questions: $root.lesson.questions"></div>
+    <div v-component="questions" v-with="questions: $root.lesson.questions, id: $root.lesson.id"></div>
   </div>
   <div role="tabpanel" v-class="active: active==='files'" class="tab-pane">
-    <div v-component="files" v-with="files: $root.lesson.files"></div>
+    <div v-component="files" v-with="files: $root.lesson.files, id: $root.lesson.id"></div>
   </div>
 </div>

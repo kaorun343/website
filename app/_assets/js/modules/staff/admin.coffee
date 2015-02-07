@@ -21,6 +21,8 @@ do ($ = jQuery) ->
   return
 
 
+{File, Lesson} = require 'modules::staff.admin.models'
+
 app = new Vue
   el: '#app'
   template: require './admin.html'
@@ -30,49 +32,11 @@ app = new Vue
     navigate: (path) ->
       Vue.navigate("#{path}")
       return
-    base_url: -> $('meta[name="_base"]').attr('content')
   filters:
     timestamp: (value) -> moment.unix(value).format "MM月DD日 HH時mm分" if value
   events:
     lesson: (id) ->
-      i = id or @lesson.id
-      $.getJSON "#{@base_url()}admin/staff/lesson/#{i}.json", (@lesson) =>
-        return
-      return
-    files: (func)->
-      $.getJSON "#{@base_url()}admin/staff/files.json", func
-      return
-
-    post: (url, data, done) ->
-      $.ajax
-        type: "POST"
-        dataType: "json"
-        headers:
-          'X-Csrf-Token': fuel_csrf_token()
-        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
-        data: data
-      .done done
-      return
-
-    put: (url, data, done) ->
-      $.ajax
-        type: "PUT"
-        dataType: "json"
-        headers:
-          'X-Csrf-Token': fuel_csrf_token()
-        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
-        data: data
-      .done done
-      return
-
-    del: (url, done) ->
-      $.ajax
-        type: "DELETE"
-        dataType: "json"
-        headers:
-          'X-Csrf-Token': fuel_csrf_token()
-        url: "#{@base_url()}admin/staff/lesson/#{@lesson.id}#{url}"
-      .done done
+      Lesson.get(id or @lesson.id).done (@lesson) => return
       return
 
     markdown: (id) ->

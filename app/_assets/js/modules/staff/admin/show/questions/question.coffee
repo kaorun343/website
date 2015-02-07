@@ -1,3 +1,5 @@
+{Question} = require 'modules::staff.admin.models'
+
 module.exports =
   ready: ->
     @$set 'deletable', true
@@ -8,11 +10,10 @@ module.exports =
 
     submit: (e) ->
       e.preventDefault()
-      @$dispatch 'put', "/question/#{@id}", @$data, (res) ->
-        return
+      Question.put(@lesson_id, @id, @$data)
       return
     delete: ->
-      @$dispatch 'del', "/question/#{@id}", (res) =>
+      Question.delete(@lesson_id, @id).done (res) =>
         @$dispatch 'lesson'
         return
       return

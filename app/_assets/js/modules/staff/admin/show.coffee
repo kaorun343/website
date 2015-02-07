@@ -7,9 +7,7 @@ module.exports =
       'questions': '設問'
       'files':     'ファイル'
   events:
-    'bs:tabbar:clicked': (tabId) ->
-      @active = tabId
-      false
+    'bs:tabbar:clicked': (@active) -> false
   components:
     lesson:    require './show/lesson'
     questions: require './show/questions'
