@@ -7,9 +7,12 @@ Vue.use bootstrap
 
 moment = require 'moment'
 
+{Api, Lesson, Result} = require 'modules::staff.app.models'
+
 app = new Vue
   el: '#app'
   template: require './app.html'
+  mixins: [bootstrap.mixin]
   data:
     lessons:   {}
     lesson:    {}
@@ -24,38 +27,15 @@ app = new Vue
     navigate: (path) ->
       Vue.navigate("#{path}")
       return
-    base_url: -> $('meta[name="_base"]').attr('content')
 
   ready: ->
-    $.getJSON "#{@base_url()}api/staff/index", (data) =>
-      for key, value of data
-        @$set key, value
-      return
+    Api.getAll().then ({@articles, @downloads, @lessons, @results}) => return
     return
 
   events:
-    'api:get': (str) ->
-      $.getJSON "#{@base_url()}api/staff/#{str}", (json) =>
-        @$set str, json
-        return
-      return
-
-    lesson: (id) ->
-      $.getJSON "#{@base_url()}api/staff/lesson/#{id}", (@lesson) =>
-        @$broadcast 'count', Object.keys(@lesson.questions)
-        return
-      return
-
-    result: ->
+    'post:result': ->
       unless @results[@lesson.id]
-        $.ajax
-          type: "POST"
-          dataType: "json"
-          url: "#{@base_url()}api/staff/lesson/#{@lesson.id}/result"
-          headers:
-            'X-Csrf-Token': fuel_csrf_token()
-        .done (@results) =>
-          return
+        Result.post(@lesson.id).then (@results) => return
       return
 
   components:
@@ -72,13 +52,13 @@ app = new Vue
     '/index':
       componentId: 'news'
       isDefault: true
-      afterUpdate: (location) ->
+      afterUpdate: ->
         document.title = "スタッフサイト"
         return
 
     '/lessons':
       componentId: 'home'
-      afterUpdate: (location) ->
+      afterUpdate: ->
         document.title = "課題一覧 | スタッフサイト"
         return
 
@@ -86,4 +66,5 @@ app = new Vue
       componentId: 'lesson'
       afterUpdate: ({params}) ->
         document.title = "課題#{params.id} | スタッフサイト"
-        @$emit 'lesson', params.id
+        Lesson.get(params.id).then (@lesson) => return
+        return

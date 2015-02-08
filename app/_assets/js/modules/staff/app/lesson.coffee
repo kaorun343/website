@@ -6,9 +6,7 @@ module.exports =
       'answer': '設問'
     active: "video"
   events:
-    'bs:tabbar:clicked': (tabId) ->
-      @active = tabId
-      false
+    'bs:tabbar:clicked': (@active) -> false
   components:
     video:  require './lesson/video'
     answer: require './lesson/answer'

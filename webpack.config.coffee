@@ -15,6 +15,8 @@ module.exports = ({watch}) ->
     extensions: ["", ".js", ".coffee"]
     alias:
       'vue-bootstrap': "#{__dirname}/app/_assets/js/bootstrap/index.coffee"
+
+      'modules::staff.app.models':   "#{mPath}/staff/app/models/index.coffee"
       'modules::staff.admin.models': "#{mPath}/staff/admin/models/index.coffee"
   module:
     loaders: [

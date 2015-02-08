@@ -15,13 +15,14 @@ module.exports =
       if @results.reduce ((t, q) -> if q.result then t else false), true
         @clear = true
         #データをサーバーに送信
-        @$dispatch 'result'
+        @$dispatch 'post:result'
 
-      $('#myModal').modal
+      @$dispatch 'bs:modal', '#myModal',
         backdrop: 'static'
         keyboard: false
       return
+      
     hide: ->
-      $('#myModal').modal 'hide'
+      @$dispatch 'bs:modal', '#myModal', 'hide'
       @$root.navigate('/list')
       return
