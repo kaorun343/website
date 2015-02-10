@@ -12,8 +12,12 @@ class Model_Api extends \Model
     public static function results()
     {
         $user_id = \Auth::get_user_id()[1];
-        $result = Model_User::find($user_id)->result;
-        return $result->lessons;
+        if($result = Model_User::find($user_id)->result) {
+            return $result->lessons;
+        }
+        else {
+            return [];
+        }
     }
 
     public static function downloads()
