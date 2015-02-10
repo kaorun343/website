@@ -24,5 +24,5 @@ module.exports =
       
     hide: ->
       @$dispatch 'bs:modal', '#myModal', 'hide'
-      @$root.navigate('/list')
+      @$root.navigate('/lessons')
       return

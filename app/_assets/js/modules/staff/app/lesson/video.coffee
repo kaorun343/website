@@ -5,7 +5,8 @@ module.exports =
   template: require './video.html'
   filters:
     timestamp: (id) ->
-      moment.unix(@$root.results[id]).format("MM月DD日 HH時mm分") or ""
+      date = @$root.results[id]
+      moment.unix(date).format("MM月DD日 HH時mm分") if date
     marked: (value) -> marked value or "（説明なし）"
   directives:
     'youtube':
