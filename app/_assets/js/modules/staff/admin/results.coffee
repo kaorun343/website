@@ -4,6 +4,8 @@ module.exports =
   template: require './results.html'
   components:
     user: require './results/user'
+  computed:
+    size: -> Object.keys(@results).length
   data: ->
     results: {}
   ready: ->
